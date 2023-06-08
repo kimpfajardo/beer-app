@@ -18,10 +18,10 @@ export const Logo = ({ className, size = 'sm'}: LogoProps) => {
         lobster.className,
         className,
         sizes[size as keyof typeof sizes],
-        "text-indigo-600"
+        'text-indigo-600'
       )}
     >
-      Alemanac
+      <span className="text-amber-600">Ale</span>manac
     </h1>
-  );
+  )
 };

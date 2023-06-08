@@ -122,3 +122,6 @@ export const mockBeer = {
     "The earthy and floral aromas from the hops can be overpowering. Drop a little Cascade in at the end of the boil to lift the profile with a bit of citrus.",
   contributed_by: "Sam Mason <samjbmason>",
 };
+
+
+export type BeerType = typeof mockBeer;
