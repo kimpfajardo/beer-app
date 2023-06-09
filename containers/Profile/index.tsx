@@ -1,13 +1,21 @@
 "use client";
 import { Card } from "@/components/Card";
 import { DetailFields } from "../DetailFields";
-import { BeerMugIcon } from "@/components/Icons";
+import { AvatarIcon, BeerMugIcon } from "@/components/Icons";
 import { Tooltip } from "@/components/Tooltip";
 import { Button } from "@/components/Button";
 import { useRouter } from "next/navigation";
 import { ExclamationTriangleIcon, ShoppingBagIcon } from "@heroicons/react/20/solid";
 import { Modal } from "@/components/Modal";
 import { useState } from "react";
+
+export const ProfileImage = () => {
+  return (
+    <div className="inline-block h-32 w-32 overflow-hidden mx-auto rounded-full bg-gray-100 shadow-lg border-4 border-slate-100">
+      <AvatarIcon />
+    </div>
+  );
+}
 
 export const UserInformation = () => {
   return (
@@ -40,14 +48,14 @@ export const ProfileNavigation = () => {
   return (
     <div className="grid gap-4 grid-cols-2">
       <Button
-        className="py-3 px-6 h-16 rounded-2xl bg-indigo-600 hover:bg-indigo-500 flex space-x-4 items-center"
+        className="py-3 px-6 h-16 rounded-lg bg-indigo-600 hover:bg-indigo-500 flex space-x-4 items-center"
         onClick={goToShoppingList}
       >
         <ShoppingBagIcon className="w-5 h-5" />
         <span>View my shop list</span>
       </Button>
       <Button
-        className="py-3 px-6 h-16 rounded-2xl bg-amber-600 hover:bg-amber-500 flex space-x-4 items-center"
+        className="py-3 px-6 h-16 rounded-lg bg-amber-600 hover:bg-amber-500 flex space-x-4 items-center"
         onClick={goToBeerGallery}
       >
         <BeerMugIcon className="w-5 h-5" />

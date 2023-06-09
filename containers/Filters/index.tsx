@@ -3,8 +3,7 @@ import { FilterPills } from "../FilterPills";
 import { useRouter } from "next/navigation";
 import { useResolveBeerFilter } from "@/hooks/filters";
 import { useCallback } from "react";
-
-export const filtersList = ["All", "High Alcohol", "High Acidity"];
+import { FILTER_LIST } from "@/utils/constants";
 
 export const formatFilterToParams = (filter: string) => {
   return filter.replaceAll(" ", "_").toLowerCase();
@@ -56,7 +55,7 @@ export const Filters = () => {
       {/* <h3 className='font-bold text-center mb-10'>Categories</h3> */}
       <div className="flex justify-center pt-6 ">
         <div className="flex items-center space-x-4">
-          {filtersList.map((item, index) => (
+          {FILTER_LIST.map((item, index) => (
             <FilterPills
               key={`filter-${item}-${index}`}
               isActive={getActiveValue(item)}

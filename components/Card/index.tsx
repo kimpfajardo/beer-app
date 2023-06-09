@@ -9,7 +9,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         className={cn(
           className,
-          "border-0 overflow-hidden relative rounded-2xl bg-white p-6 transition-[box-shadow] duration-300"
+          "border-0 overflow-hidden relative rounded-xl bg-white p-6 transition-[box-shadow] duration-300 ring-1 ring-gray-300"
         )}
         {...rest}
         ref={ref}

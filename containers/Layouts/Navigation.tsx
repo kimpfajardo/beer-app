@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 const user = {
@@ -27,15 +28,17 @@ const navigation = [
   { name: "Directory", href: "#", current: false },
 ];
 const userNavigation = [
-  { name: "Your Profile", href: "/profile" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "My Profile", href: "/profile" },
+  { name: "Sign out...", href: "/sign-out" },
 ];
 
 export const Navigation = () => {
   const { updateBeerList } = useBeerList();
+  const router = useRouter();
   const [searchItem, setSearchItem] = useState<string>("");
   const debouncedSearchItem = useDebounce(searchItem, 500);
+
+  const goToShoppingList = () => router.push("/shopping-list");
 
   useEffect(() => {
     updateBeerList(debouncedSearchItem);
@@ -43,7 +46,7 @@ export const Navigation = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchItem(e.target.value);
-  }
+  };
   return (
     <Popover
       as="header"
@@ -102,16 +105,16 @@ export const Navigation = () => {
                 </Popover.Button>
               </div>
               <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-2">
-                <a
-                  href="#"
+                <button
                   className="ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  onClick={goToShoppingList}
                 >
                   <span className="sr-only">View notifications</span>
                   <ShoppingBagIcon
                     className="h-6 w-6 text-black"
                     aria-hidden="true"
                   />
-                </a>
+                </button>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-5 flex-shrink-0">
@@ -144,7 +147,8 @@ export const Navigation = () => {
                               href={item.href}
                               className={cn(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "block px-4 py-2 text-sm text-gray-700",
+                                item.name === "Sign out..." && "text-red-600"
                               )}
                             >
                               {item.name}
@@ -199,6 +203,7 @@ export const Navigation = () => {
                 <button
                   type="button"
                   className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  onClick={goToShoppingList}
                 >
                   <span className="sr-only">View notifications</span>
                   <ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />

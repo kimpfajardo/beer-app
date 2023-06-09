@@ -13,6 +13,11 @@ export enum Filter {
   HIGH_ACIDITY = "High Acidity",
 }
 
+export enum SortFilter {
+  A2Z = "A-Z",
+  Z2A = "Z-A",
+}
+
 export const FilterPills = ({
   value,
   isActive,
@@ -35,10 +40,26 @@ export const FilterPills = ({
   return (
     <Pill
       className={cn(
-        'transition-[background]',
-        isActive && "font-bold",
+        "transition-all",
+        // isActive && "font-bold",
         isActive && filterColors[value as Filter].color,
         filterColors[value as Filter].hoverColor
+      )}
+      {...rest}
+    >
+      {value}
+    </Pill>
+  );
+};
+
+export const SortPills = ({ value, isActive, ...rest }: CategoryPillProps) => {
+  return (
+    <Pill
+      className={cn(
+        "transition-[background] text-amber-700",
+        // isActive && "font-bold",
+        isActive && "bg-amber-700",
+        "hover:bg-amber-100"
       )}
       {...rest}
     >

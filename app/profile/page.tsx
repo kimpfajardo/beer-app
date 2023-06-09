@@ -1,4 +1,17 @@
+import {
+  Actions,
+  ProfileImage,
+  ProfileNavigation,
+  UserInformation,
+} from "@/containers/Profile";
 
 export default function Page() {
-    return <div></div>
+  return (
+    <>
+      <ProfileImage />
+      <UserInformation />
+      <ProfileNavigation />
+      <Actions />
+    </>
+  );
 }
