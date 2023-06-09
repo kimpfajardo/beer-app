@@ -1,10 +1,10 @@
-import { Navigation } from '@/containers/Layouts/Navigation'
-import { BeerProvider } from '@/context/BeersContext'
+import { Navigation } from "@/containers/Layouts/Navigation";
+import { BeerProvider } from "@/context/BeersContext";
 
 export const metadata = {
-  title: 'Alemanac | Beer gallery',
-  description: 'Explore the best beers in the world'
-}
+  title: "Alemanac | Beer gallery",
+  description: "Explore the best beers in the world",
+};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <html>
         <body>
           <BeerProvider>
-            <div className='bg-slate-50 h-screen overflow-y-scroll'>
+            <div className="bg-slate-50 h-screen overflow-y-scroll">
               <Navigation />
               <main>{children}</main>
             </div>
@@ -20,5 +20,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </body>
       </html>
     </>
-  )
+  );
 }

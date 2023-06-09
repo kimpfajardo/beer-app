@@ -8,9 +8,9 @@ export const ButtonVariants = cva(" py-1.5 font-semibold text-sm", {
       primary:
         "bg-indigo-600 px-2 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
       secondary:
-        "bg-white px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
+        "border-0 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-100",
       ghost:
-        "bg-indigo-50 px-2 text-indigo-600 shadow-sm hover:bg-indigo-100",
+        "bg-none px-2 text-black-600 hover:bg-gray-50",
     },
     roundness: {
       default: "rounded",
