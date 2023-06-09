@@ -46,7 +46,7 @@ export const ProfileNavigation = () => {
   const goToBeerGallery = () => router.push("/beer-gallery");
   const goToShoppingList = () => router.push("/shopping-list");
   return (
-    <div className="grid gap-4 grid-cols-2">
+    <div className="grid gap-4  sm:grid-cols-2">
       <Button
         className="py-3 px-6 h-16 rounded-lg bg-indigo-600 hover:bg-indigo-500 flex space-x-4 items-center"
         onClick={goToShoppingList}

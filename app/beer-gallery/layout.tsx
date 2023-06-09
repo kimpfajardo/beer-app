@@ -1,5 +1,6 @@
 import { Navigation } from "@/containers/Layouts/Navigation";
 import { BeerProvider } from "@/context/BeersContext";
+import { inter } from "@/utils/fonts";
 
 export const metadata = {
   title: "Alemanac | Beer gallery",
@@ -10,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <html>
-        <body>
+        <body className={inter.className}>
           <BeerProvider>
             <div className="bg-slate-50 h-screen overflow-y-scroll">
               <Navigation />

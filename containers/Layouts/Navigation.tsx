@@ -63,9 +63,7 @@ export const Navigation = () => {
             <div className="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
               <div className="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-2">
                 <div className="flex flex-shrink-0 items-center">
-                  <a href="#">
-                    <Logo />
-                  </a>
+                  <Logo />
                 </div>
               </div>
               <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-8">
@@ -163,26 +161,13 @@ export const Navigation = () => {
             </div>
           </div>
 
-          <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
-            <div className="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  aria-current={item.current ? "page" : undefined}
-                  className={cn(
-                    item.current
-                      ? "bg-gray-100 text-gray-900"
-                      : "hover:bg-gray-50",
-                    "block rounded-md py-2 px-3 text-base font-medium"
-                  )}
-                >
-                  {item.name}
-                </a>
-              ))}
-            </div>
+          <Popover.Panel
+            as="nav"
+            className="lg:hidden h-screen bg-white"
+            aria-label="Global"
+          >
             <div className="border-t border-gray-200 pb-3 pt-4">
-              <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
+              <div className="mx-auto flex max-w-3xl items-center justify-between px-4 sm:px-6 space-x-2">
                 <div className="flex-shrink-0">
                   <Image
                     className="h-10 w-10 rounded-full"
@@ -193,12 +178,10 @@ export const Navigation = () => {
                   />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium text-gray-800">
+                  <div className="text-base font-bold text-gray-800">
                     {user.name}
                   </div>
-                  <div className="text-sm font-medium text-gray-500">
-                    {user.email}
-                  </div>
+                  <div className="text-xs text-gray-400">{user.email}</div>
                 </div>
                 <button
                   type="button"
@@ -214,7 +197,10 @@ export const Navigation = () => {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                    className={cn(
+                      "block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900",
+                      item.name === "Sign out..." && "text-red-600"
+                    )}
                   >
                     {item.name}
                   </a>

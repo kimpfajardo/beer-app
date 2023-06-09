@@ -61,13 +61,13 @@ export const BeerProvider = ({ children }: { children: ReactNode }) => {
         return [
           ...beersRawList.filter((item) => {
             if (highAlcohol && highAcidity) {
-              return item.abv > 6 && item.ph < 4;
+              return item?.abv > 6 && item?.ph < 4;
             }
             if (highAlcohol) {
-              return item.abv > 6;
+              return item?.abv > 6;
             }
             if (highAcidity) {
-              return item.ph < 4;
+              return item?.ph < 4;
             }
             return true;
           }),
@@ -104,6 +104,4 @@ export const BeerProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useBeerList = () => {
-  return useContext(BeerListContext);
-};
+export const useBeerList = () => useContext(BeerListContext);

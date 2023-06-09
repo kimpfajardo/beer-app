@@ -1,4 +1,6 @@
 import { AuthBackgroundImg } from "@/containers/SignInForm/background";
+import { inter } from "@/utils/fonts";
+import { cn } from "@/utils/functions";
 
 export const metadata = {
   title: "Alemanac | Sign in",
@@ -9,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <html className="h-full">
-        <body className="bg-white">
+        <body className={cn(inter.className,"bg-white")}>
           <div className="flex h-screen">
             {children}
             <AuthBackgroundImg />
