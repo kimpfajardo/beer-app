@@ -6,20 +6,51 @@ import { FILTER_LIST, SORT_LIST } from "@/utils/constants";
 import { cn } from "@/utils/functions";
 import { Menu, Transition } from "@headlessui/react";
 import {
+  CheckIcon,
   ChevronDownIcon,
   MinusIcon,
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import { Fragment, use, useCallback, useState } from "react";
+import {
+  Fragment,
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { FilterPills } from "../FilterPills";
 import { BeerMugIcon, WaterIcon } from "@/components/Icons";
 import { Tooltip } from "@/components/Tooltip";
 
-export const ShopListCard = ({ details }: { details: BeerType }) => {
-  const { name, image_url, abv, ph } = details;
-  const [count, setCount] = useState(1);
+export const ShopListCard = ({
+  details,
+}: {
+  details: {
+    [x: string]: any;
+  };
+}) => {
+  const { beer_id, count } = details;
+  const fetchBeer = async (id: number) => {
+    const res = await fetch(`https://api.punkapi.com/v2/beers?ids=${id}`);
+    const data = await res.json();
+
+    return data;
+  };
+  const [beer, setBeer] = useState<BeerType | null>(null);
+
+  useEffect(() => {
+    fetchBeer(beer_id).then((data) => {
+      setBeer(data[0]);
+    });
+  }, [beer_id]);
+
+  const { name, image_url, abv, ph } =
+    (beer as unknown as BeerType) ?? ({} as BeerType);
+
+  const [beerCount, setCount] = useState<number>(count as number);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) as number;
     if (value < 1) {
@@ -50,22 +81,35 @@ export const ShopListCard = ({ details }: { details: BeerType }) => {
   return (
     <Card className="py-2">
       <div className="grid grid-cols-[auto_1fr] gap-6">
-        <Image src={image_url} width={48} height={48} alt={name} />
+        <div className="w-16 h-16 relative mt-2">
+          <Image
+            className="object-contain"
+            src={image_url ?? ""}
+            fill
+            alt={name}
+          />
+        </div>
         <div className="space-y-6">
           <div className="space-y-2">
             <p className="font-bold text-base sm:text-xl">{name}</p>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-2 group relative">
                 <BeerMugIcon className="text-xl text-amber-700" />
-                <span>{abv ?? "N/A"}%</span>
+                <span>
+                  {abv ?? "N/A"}
+                  {abv && "%"}
+                </span>
                 <Tooltip className="hidden group-hover:block group-hover:absolute left-1/4 top-full w-max">
                   ABV: Alcohol by volume
                 </Tooltip>
-              </div>{" "}
+              </div>
               <span className="text-gray-300">|</span>
               <div className="flex items-center space-x-2 group relative">
                 <WaterIcon className="text-xl text-indigo-700" />
-                <span>{ph ?? "N/A"}%</span>
+                <span>
+                  {ph ?? "N/A"}
+                  {ph && "%"}
+                </span>
                 <Tooltip className="hidden group-hover:block group-hover:absolute left-1/4 top-full w-max">
                   pH: Acidity
                 </Tooltip>
@@ -85,7 +129,8 @@ export const ShopListCard = ({ details }: { details: BeerType }) => {
                 onChange={handleChange}
                 type="number"
                 step={0}
-                value={count}
+                value={beerCount}
+                onBlur={() => setCount(count)}
               />
               <Button
                 className="h-8 w-8 p-0 rounded-full flex justify-center items-center"
@@ -94,13 +139,24 @@ export const ShopListCard = ({ details }: { details: BeerType }) => {
                 <MinusIcon className="w-5 h-5" />
               </Button>
             </div>
-            <Button
-              variant="secondary"
-              className="h-8 w-full sm:w-8 p-0 sm:rounded-full flex justify-center items-center text-red-500 ring-red-400"
-            >
-              <TrashIcon className="w-5 h-5 hidden sm:block" />
-              <span className="sm:hidden">Delete</span>
-            </Button>
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-x-4 w-full sm:w-auto sm:space-y-0">
+              {beerCount !== count && (
+                <Button
+                  variant="secondary"
+                  className="h-8 w-full sm:w-8 p-0 sm:rounded-full flex justify-center items-center text-green-600 ring-green-400"
+                >
+                  <CheckIcon className="w-5 h-5 hidden sm:block" />
+                  <span className="sm:hidden">Save</span>
+                </Button>
+              )}
+              <Button
+                variant="secondary"
+                className="h-8 w-full sm:w-8 p-0 sm:rounded-full flex justify-center items-center text-red-500 ring-red-400"
+              >
+                <TrashIcon className="w-5 h-5 hidden sm:block" />
+                <span className="sm:hidden">Delete</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

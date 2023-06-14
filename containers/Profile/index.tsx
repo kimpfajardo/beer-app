@@ -5,9 +5,17 @@ import { AvatarIcon, BeerMugIcon } from "@/components/Icons";
 import { Tooltip } from "@/components/Tooltip";
 import { Button } from "@/components/Button";
 import { useRouter } from "next/navigation";
-import { ExclamationTriangleIcon, ShoppingBagIcon } from "@heroicons/react/20/solid";
+import {
+  ExclamationTriangleIcon,
+  ShoppingBagIcon,
+} from "@heroicons/react/20/solid";
 import { Modal } from "@/components/Modal";
 import { useState } from "react";
+import { useSupabase } from "@/context/SupabaseContext";
+import { User } from "@supabase/supabase-js";
+import moment from "moment";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useAuthContext } from "@/context/UserContext";
 
 export const ProfileImage = () => {
   return (
@@ -15,18 +23,30 @@ export const ProfileImage = () => {
       <AvatarIcon />
     </div>
   );
-}
+};
 
 export const UserInformation = () => {
+  const { user } = useAuthContext();
+
+  const firstName = user?.user_metadata.first_name ?? "";
+  const lastName = user?.user_metadata.last_name ?? "";
+  const userEmail = user?.email ?? "";
+  const birthDate =
+    moment(user?.user_metadata.birth_data).format("YYYY-MM-DD") ?? "";
+  const joinDate =
+    moment(user?.user_metadata.created_at).format("YYYY-MM-DD") ?? "";
+
   return (
     <Card className="grid grid-cols-2 gap-10">
-      <DetailFields label="Name" value="Kim Fajardo" />
-      <DetailFields label="Gender" value="M" />
-      <DetailFields label="Email" value="kim.p.fajardo@gmail.com" />
-      <div></div>
+      <DetailFields label="First Name" value={firstName ?? ''} />
+      <DetailFields label="Last Name" value={lastName ?? ''} />
+
+      <div className="col-span-2">
+        <DetailFields label="Email" value={userEmail} />
+      </div>
       <DetailFields
         label="Birth date"
-        value="09/24/1998"
+        value={birthDate}
         customLabelIcon={
           <div className="group relative">
             <BeerMugIcon className="group-hover:text-lg text-amber-600 transition-all group-hover:-translate-y-1 group-hover:rotate-12" />
@@ -36,7 +56,7 @@ export const UserInformation = () => {
           </div>
         }
       />
-      <DetailFields label="Date Joined" value="06/09/2023" />
+      <DetailFields label="Date Joined" value={joinDate} />
     </Card>
   );
 };
@@ -67,6 +87,13 @@ export const ProfileNavigation = () => {
 
 export const Actions = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const router = useRouter();
+  const supabase = createClientComponentClient();
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
   return (
     <>
       <Modal
@@ -95,6 +122,7 @@ export const Actions = () => {
         <Button
           variant={"secondary"}
           className="mt-auto text-black-800 py-4 border-0 border-red-400"
+          onClick={signOut}
         >
           Sign out
         </Button>

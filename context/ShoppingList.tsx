@@ -16,14 +16,24 @@ export interface ShoppingListContext {
   filter: string[];
   updateFilter: (filter: string) => void;
   searchBeer: (search: string) => void;
-  beers: BeerType[];
+  beers: {
+    [x: string]: any;
+  }[];
 }
 
 export const ShoppingListContext = createContext<ShoppingListContext>(
   {} as ShoppingListContext
 );
 
-export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
+export const ShoppingListProvider = ({
+  children,
+  beerList,
+}: {
+  children: ReactNode;
+  beerList: {
+    [x: string]: any;
+  }[];
+}) => {
   const [sort, setSort] = useState<string>(SORT_LIST[0] as string);
   const [filter, setFilter] = useState<string[]>([FILTER_LIST[0]] as string[]);
 
@@ -52,13 +62,9 @@ export const ShoppingListProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const [mainBeerList, setMainBeerList] = useState<BeerType[]>([
-    mockBeer,
-  ] as BeerType[]);
+  const [mainBeerList, setMainBeerList] = useState<any[]>(beerList as any[]);
   const [searchTerm, setSearchTerm] = useState<string>("" as string);
-  const [beers, setBeers] = useState<BeerType[]>([
-    ...mainBeerList,
-  ] as BeerType[]);
+  const [beers, setBeers] = useState<any[]>(mainBeerList as any[]);
 
   const searchBeer = (search: string) => {
     setSearchTerm(search);

@@ -1,6 +1,8 @@
 "use client";
+import { AvatarIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
 import { useBeerList } from "@/context/BeersContext";
+import { useAuthContext } from "@/context/UserContext";
 import { useDebounce } from "@/hooks/debounce";
 import { cn } from "@/utils/functions";
 import { Menu, Popover, Transition } from "@headlessui/react";
@@ -10,35 +12,49 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
-const user = {
-  name: "Chelsea Hagon",
-  email: "chelsea.hagon@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
   { name: "Calendar", href: "#", current: false },
   { name: "Teams", href: "#", current: false },
   { name: "Directory", href: "#", current: false },
 ];
-const userNavigation = [
-  { name: "My Profile", href: "/profile" },
-  { name: "Sign out...", href: "/sign-out" },
-];
+const userNavigation = [{ name: "My Profile", href: "/profile" }];
 
 export const Navigation = () => {
   const { updateBeerList } = useBeerList();
   const router = useRouter();
+  const { user } = useAuthContext();
   const [searchItem, setSearchItem] = useState<string>("");
   const debouncedSearchItem = useDebounce(searchItem, 500);
+  const supabase = createClientComponentClient();
 
-  const goToShoppingList = () => router.push("/shopping-list");
+  const goToShoppingList = async () => {
+    const shoppingList = await supabase
+      .from("shopping-list")
+      .select("*")
+      .eq("user_id", user?.id);
+    if (!shoppingList.error && (shoppingList?.data).length === 0) {
+      await supabase
+        .from("shopping-list")
+        .insert({ user_id: user?.id, created_at: new Date() });
+      if (!shoppingList.error) {
+        router.push("/shopping-list");
+      }
+      return;
+    }
+    router.push("/shopping-list");
+  };
 
   useEffect(() => {
     updateBeerList(debouncedSearchItem);
@@ -47,6 +63,12 @@ export const Navigation = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchItem(e.target.value);
   };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
+
   return (
     <Popover
       as="header"
@@ -66,7 +88,7 @@ export const Navigation = () => {
                   <Logo />
                 </div>
               </div>
-              <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-8">
+              <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-8 h-[68px]">
                 <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-lg lg:mx-0 lg:max-w-none xl:px-0">
                   <div className="w-full">
                     <label htmlFor="search" className="sr-only">
@@ -119,13 +141,7 @@ export const Navigation = () => {
                   <div>
                     <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
-                      <Image
-                        className="h-8 w-8 rounded-full"
-                        src={user.imageUrl}
-                        alt=""
-                        width={32}
-                        height={32}
-                      />
+                      <AvatarIcon className="h-8 w-8 rounded-full text-gray-300 ring-1 ring-gray-100" />
                     </Menu.Button>
                   </div>
                   <Transition
@@ -145,8 +161,7 @@ export const Navigation = () => {
                               href={item.href}
                               className={cn(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700",
-                                item.name === "Sign out..." && "text-red-600"
+                                "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
                               {item.name}
@@ -154,6 +169,14 @@ export const Navigation = () => {
                           )}
                         </Menu.Item>
                       ))}
+                      <Menu.Item>
+                        <a
+                          className="text-red-600 block px-4 py-2 text-sm cursor-pointer"
+                          onClick={handleSignOut}
+                        >
+                          Sign out...
+                        </a>
+                      </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>
@@ -169,19 +192,16 @@ export const Navigation = () => {
             <div className="border-t border-gray-200 pb-3 pt-4">
               <div className="mx-auto flex max-w-3xl items-center justify-between px-4 sm:px-6 space-x-2">
                 <div className="flex-shrink-0">
-                  <Image
-                    className="h-10 w-10 rounded-full"
-                    src={user.imageUrl}
-                    alt=""
-                    width={40}
-                    height={40}
-                  />
+                  <AvatarIcon className="h-10 w-10 rounded-full text-gray-300 ring-1 ring-gray-100" />
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-bold text-gray-800">
-                    {user.name}
+                    {user?.user_metadata?.first_name ?? ""}{" "}
+                    {user?.user_metadata?.last_name ?? ""}
                   </div>
-                  <div className="text-xs text-gray-400">{user.email}</div>
+                  <div className="text-xs text-gray-400">
+                    {user?.email ?? ""}
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -198,13 +218,18 @@ export const Navigation = () => {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900",
-                      item.name === "Sign out..." && "text-red-600"
+                      "block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                     )}
                   >
                     {item.name}
                   </a>
                 ))}
+                <a
+                  className="text-red-600 block rounded-md px-3 py-2 text-base font-medium hover:bg-red-50 hover:text-red-700 cursor-pointer"
+                  onClick={handleSignOut}
+                >
+                  Sign out...
+                </a>
               </div>
             </div>
           </Popover.Panel>

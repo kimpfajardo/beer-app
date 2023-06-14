@@ -1,14 +1,9 @@
 import { LayoutProps } from "@/.next/types/app/layout";
 import { Logo } from "@/components/Logo";
-import { Navigation } from "@/containers/Profile/Navigation";
+import { Navigation } from "@/containers/ShoppingList/Navigation";
 import { inter } from "@/utils/fonts";
 
-export const metadata = {
-  title: "Alemanac | Profile",
-  description: "Profile",
-};
-
-export default function ProfileLayout({ children }: LayoutProps) {
+export default function Layout({ children }: LayoutProps) {
   return (
     <body className={inter.className}>
       <div className="bg-slate-50 min-h-screen p-0 sm:p-6 lg:p-8">

@@ -1,18 +1,25 @@
-'use client'
+"use client";
 import { AvatarIcon } from "@/components/Icons";
 import { cn } from "@/utils/functions";
 import { Menu, Transition } from "@headlessui/react";
 import { Bars3Icon } from "@heroicons/react/20/solid";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 
 const ProfileNavigation = [
   { name: "View beer gallery", href: "/beer-gallery" },
   { name: "View my shop list", href: "/shopping-list" },
-  { name: "Sign out...", href: "/sign-out" },
 ];
 
 export const Navigation = () => {
+  const supabase = createClientComponentClient();
+  const router = useRouter();
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
   return (
     <Menu as="div" className="relative ml-5 flex-shrink-0">
       <div>
@@ -37,9 +44,8 @@ export const Navigation = () => {
                 <Link
                   href={item.href}
                   className={cn(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700",
-                    item.name === "Sign out..." && "text-red-600"
+                    active && "bg-gray-100",
+                    "block px-4 py-2 text-sm text-gray-700"
                   )}
                 >
                   {item.name}
@@ -47,6 +53,14 @@ export const Navigation = () => {
               )}
             </Menu.Item>
           ))}
+          <Menu.Item>
+            <a
+              className="text-red-600 hover:bg-red-100 block px-4 py-2 text-sm cursor-pointer"
+              onClick={handleSignOut}
+            >
+              Sign out...
+            </a>
+          </Menu.Item>
         </Menu.Items>
       </Transition>
     </Menu>

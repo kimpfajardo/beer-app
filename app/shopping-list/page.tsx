@@ -42,8 +42,8 @@ export default function Page() {
           <FilterMenu value={filter} onChange={updateFilter} />
           <SortMenu value={sort} onChange={updateSort} />
         </div>
-        <div className="space-y-4">
-          {beers.map((item, index) => (
+        <div className="gap-4 flex flex-col-reverse">
+          {beers.sort((a,b) => a.created_at - b.created_at).map((item, index) => (
             <ShopListCard
               details={item}
               key={`${item.name}-${index}-shoplist`}

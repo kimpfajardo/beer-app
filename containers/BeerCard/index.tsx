@@ -4,29 +4,36 @@ import useMouseLeave from "use-mouse-leave";
 import { AddToShopList } from "../AddToShopList";
 import { BeerMugIcon, WaterIcon } from "@/components/Icons";
 import { BeerType } from "@/mockBeer";
+import Link from "next/link";
+import { useAuthContext } from "@/context/UserContext";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Toast } from "@/components/Toast";
 export interface BeerCardProps {
   details: BeerType;
 }
 
 export const BeerCard = ({ details }: BeerCardProps) => {
   const [mouseLeft, ref] = useMouseLeave();
-  const { name, tagline, image_url, abv, ph } = details;
+  const { name, tagline, image_url, abv, ph, id } = details;
+  
   return (
     <div
       className="border-0 overflow-hidden relative rounded-2xl bg-white p-4 py-6 pt-8 hover:shadow-md transition-[box-shadow] duration-300 group"
       ref={ref}
     >
       <div className="group-hover:block hidden absolute -mt-4">
-        <AddToShopList mouseLeft={mouseLeft} />
+        <AddToShopList mouseLeft={mouseLeft} id={id} />
       </div>
       <div className="flex justify-center cursor-pointer h-[250px] relative">
-        <Image
-          className="transition group-hover:scale-95 object-contain"
-          src={image_url ?? "/2.png"}
-          alt=""
-          fill
-          sizes="(min-width: 0px) 640px, 100vw"
-        />
+        <Link href={`/beer-details/${id}`}>
+          <Image
+            className="transition group-hover:scale-95 object-contain"
+            src={image_url ?? "/2.png"}
+            alt=""
+            fill
+            sizes="(min-width: 0px) 640px, 100vw"
+          />
+        </Link>
       </div>
       <div>
         <div className="px-4 sm:p-4 text-center">

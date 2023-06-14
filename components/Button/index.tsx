@@ -2,7 +2,7 @@ import { cn } from "@/utils/functions";
 import { VariantProps, cva } from "class-variance-authority";
 import React, { forwardRef } from "react";
 
-export const ButtonVariants = cva(" py-1.5 font-semibold text-sm", {
+export const ButtonVariants = cva(" py-1.5 font-semibold text-sm disabled:filter disabled:grayscale disabled:cursor-not-allowed", {
   variants: {
     variant: {
       primary:
