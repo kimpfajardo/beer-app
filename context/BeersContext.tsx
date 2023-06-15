@@ -17,8 +17,6 @@ export interface URLParamsObject {
 
 export interface BeerContext {
   beers: BeerType[];
-  currentPage: number;
-  totalPages: number;
   updateBeerList: (value?: string) => Promise<void>;
   loading: boolean;
 }
@@ -37,8 +35,6 @@ const BeerListContext = createContext<BeerContext>({} as BeerContext);
 export const BeerProvider = ({ children }: { children: ReactNode }) => {
   const [beersRawList, setBeersRawList] = useState<BeerType[]>([]);
   const [beers, setBeers] = useState<BeerType[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
 
   const updateBeerList = useCallback(async (value?: string) => {
@@ -93,8 +89,6 @@ export const BeerProvider = ({ children }: { children: ReactNode }) => {
     <BeerListContext.Provider
       value={{
         beers,
-        currentPage,
-        totalPages,
         updateBeerList,
         loading,
       }}

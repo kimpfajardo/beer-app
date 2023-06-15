@@ -13,9 +13,9 @@ export const Toast = () => {
       newestOnTop={false}
       closeOnClick
       rtl={false}
-      pauseOnFocusLoss
+      pauseOnFocusLoss={false}
+      pauseOnHover={false}
       draggable
-      pauseOnHover
       theme="light"
     />
   );

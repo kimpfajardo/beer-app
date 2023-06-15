@@ -6,6 +6,7 @@ import { inter } from "@/utils/fonts";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import { cookies } from "next/headers";
+import { BeerType } from "@/mockBeer";
 
 export const getBeerList = async () => {
   const supabase = createServerComponentClient({ cookies });
@@ -16,23 +17,52 @@ export const getBeerList = async () => {
     .from("shopping-list")
     .select("list_id")
     .eq("user_id", session?.user.id);
-  // const data = await getShoppingListItems()
-  if (!shoppingListByUser.error) {
-    const shoppingListId = shoppingListByUser?.data[0].list_id;
-    const { data: shoppingListItems, error } = await supabase
-      .from("beers")
-      .select("*")
-      .eq("list_id", shoppingListId);
-    if (!error) {
-      return shoppingListItems;
-    }
+  if (shoppingListByUser.error) {
     return [];
   }
-  return [];
+  const shoppingListId = shoppingListByUser?.data[0].list_id;
+  const { data: shoppingListItems, error } = await supabase
+    .from("beers")
+    .select("*")
+    .eq("list_id", shoppingListId);
+  if (error) {
+    return [];
+  }
+  return shoppingListItems;
+};
+
+export const getBeerDataById = async (
+  beerList: {
+    [x: string]: any;
+  }[]
+) => {
+  const beerIdList = beerList.map((beer) => beer.beer_id);
+  const combinedBeerIdList = beerIdList.join("|");
+  const res = await fetch(
+    `https://api.punkapi.com/v2/beers?ids=${combinedBeerIdList}`
+  );
+  if (!res.ok) {
+    return [];
+  }
+  const beerData = (await res.json()) as BeerType[];
+
+  const combineBeerDataById = beerData.map((beer) => {
+    const matchingBeerData = beerList.find((item) => {
+      return parseInt(item.beer_id) === beer.id;
+    });
+    return {
+      ...beer,
+      ...matchingBeerData,
+    };
+  });
+
+  return combineBeerDataById;
 };
 
 export default async function Layout({ children }: LayoutProps) {
-  const beerList = await getBeerList();
+  const rawBeerDataList = await getBeerList();
+  const beerList = await getBeerDataById(rawBeerDataList);
+
   return (
     <div className={inter.className}>
       <ShoppingListProvider beerList={beerList}>

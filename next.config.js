@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['images.punkapi.com', 'tailwindui.com', 'images.unsplash.com', 'www.popsci.com']
+    domains: ['assets2.lottiefiles.com','images.punkapi.com', 'tailwindui.com', 'images.unsplash.com', 'www.popsci.com']
   }
 }
 

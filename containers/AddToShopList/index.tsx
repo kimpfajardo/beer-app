@@ -1,11 +1,8 @@
 import { Button } from "@/components/Button";
-import { Toast } from "@/components/Toast";
 import { useAuthContext } from "@/context/UserContext";
 import {
   addNewBeerToShoppingList,
   cn,
-  createShoppingList,
-  fetchShoppingList,
   updateBeerItemCount,
 } from "@/utils/functions";
 import {
@@ -14,12 +11,9 @@ import {
   PlusIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/20/solid";
-import {
-  SupabaseClient,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useCallback, useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const AddToShopList = ({
   mouseLeft,
@@ -30,9 +24,9 @@ export const AddToShopList = ({
 }) => {
   const [show, setShow] = useState<boolean>(false);
   const [qty, setQty] = useState<number>(1);
-  const { user, shoppingListData } = useAuthContext();
   const supabase = createClientComponentClient();
   const [loading, setLoading] = useState(false);
+  const { user, shoppingListData } = useAuthContext();
 
   const addToShoppingList: () => void = useCallback(async () => {
     if (user) {

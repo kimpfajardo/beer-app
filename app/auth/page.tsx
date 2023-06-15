@@ -3,7 +3,6 @@ import { Logo } from "@/components/Logo";
 import { Toast } from "@/components/Toast";
 import { SignInForm } from "@/containers/AuthForm/SignIn";
 import { SignUpForm } from "@/containers/AuthForm/SignUp";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 

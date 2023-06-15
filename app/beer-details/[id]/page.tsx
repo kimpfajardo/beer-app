@@ -4,19 +4,34 @@ import {
   BrewerTips,
   Details,
   FoodPairing,
-  Introduction,
 } from "@/containers/BeerDetails";
+import { BeerType } from "@/mockBeer";
+import { redirect } from "next/navigation";
+import { Introduction } from "@/containers/BeerDetails/Introduct";
 
-export default function Page() {
+export const getBeerDetails = async (id: string) => {
+  const res = await fetch(`https://api.punkapi.com/v2/beers?ids=${id}`);
+  const data = await res.json();
+  return data;
+};
+
+export default async function Page(props: { params: { id: string } }) {
+  const { id } = props.params;
+  const [beerData] = await getBeerDetails(id);
+  if (!beerData) {
+    return redirect("/beer-gallery");
+  }
+  const { name } = beerData as BeerType;
+
   return (
     <div>
       <BreadCrumbs />
-      <h2 className="text-3xl font-bold mb-2">Beer Name</h2>
+      <h2 className="text-3xl font-bold mb-2">{name ?? ""}</h2>
       <div className="space-y-4">
-        <Introduction />
-        <Details />
-        <FoodPairing />
-        <BrewerTips />
+        <Introduction {...beerData} />
+        <Details {...beerData} />
+        <FoodPairing {...beerData} />
+        <BrewerTips {...beerData} />
       </div>
     </div>
   );

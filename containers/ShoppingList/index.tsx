@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
-import { BeerType } from "@/mockBeer";
 import { FILTER_LIST, SORT_LIST } from "@/utils/constants";
 import { cn } from "@/utils/functions";
 import { Menu, Transition } from "@headlessui/react";
@@ -13,154 +12,171 @@ import {
   TrashIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import {
-  Fragment,
-  use,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Fragment, useCallback, useState } from "react";
 import { FilterPills } from "../FilterPills";
 import { BeerMugIcon, WaterIcon } from "@/components/Icons";
 import { Tooltip } from "@/components/Tooltip";
+import { useShoppingList } from "@/context/ShoppingList";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { PulseLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import { Toast } from "@/components/Toast";
 
 export const ShopListCard = ({
   details,
+  deleteBeer,
 }: {
   details: {
     [x: string]: any;
   };
+  deleteBeer: (beer_id: number, list_id: string) => void;
 }) => {
-  const { beer_id, count } = details;
-  const fetchBeer = async (id: number) => {
-    const res = await fetch(`https://api.punkapi.com/v2/beers?ids=${id}`);
-    const data = await res.json();
+  const { name, image_url, abv, ph, count, list_id, beer_id } = details;
+  const { loading, refreshBeerList } = useShoppingList();
+  const supabase = createClientComponentClient();
 
-    return data;
-  };
-  const [beer, setBeer] = useState<BeerType | null>(null);
+  const [beerCount, setBeerCount] = useState<number>(count as number);
 
-  useEffect(() => {
-    fetchBeer(beer_id).then((data) => {
-      setBeer(data[0]);
-    });
-  }, [beer_id]);
-
-  const { name, image_url, abv, ph } =
-    (beer as unknown as BeerType) ?? ({} as BeerType);
-
-  const [beerCount, setCount] = useState<number>(count as number);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) as number;
     if (value < 1) {
-      setCount(1);
+      setBeerCount(1);
       return;
     }
     if (value > 99) {
-      setCount(99);
+      setBeerCount(99);
       return;
     }
-    setCount(value);
+    setBeerCount(value);
   };
 
   const handleIncrement = useCallback(() => {
-    setCount((prev) => {
+    setBeerCount((prev) => {
       if (prev >= 99) return prev;
       return prev + 1;
     });
   }, []);
 
   const handleDecrement = useCallback(() => {
-    setCount((prev) => {
+    setBeerCount((prev) => {
       if (prev <= 1) return prev;
       return prev - 1;
     });
   }, []);
 
+  const saveBeerCountChanges = useCallback(async () => {
+    const { error } = await supabase
+      .from("beers")
+      .update({ count: beerCount })
+      .eq("beer_id", beer_id)
+      .eq("list_id", list_id);
+    if (error) {
+      console.error(error);
+      setBeerCount(count as number);
+      return;
+    }
+    toast.success("Item count updated");
+    refreshBeerList();
+  }, [beerCount, beer_id, list_id, refreshBeerList, supabase, count]);
+
   return (
-    <Card className="py-2">
-      <div className="grid grid-cols-[auto_1fr] gap-6">
-        <div className="w-16 h-16 relative mt-2">
-          <Image
-            className="object-contain"
-            src={image_url ?? ""}
-            fill
-            alt={name}
-          />
-        </div>
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <p className="font-bold text-base sm:text-xl">{name}</p>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-2 group relative">
-                <BeerMugIcon className="text-xl text-amber-700" />
-                <span>
-                  {abv ?? "N/A"}
-                  {abv && "%"}
-                </span>
-                <Tooltip className="hidden group-hover:block group-hover:absolute left-1/4 top-full w-max">
-                  ABV: Alcohol by volume
-                </Tooltip>
-              </div>
-              <span className="text-gray-300">|</span>
-              <div className="flex items-center space-x-2 group relative">
-                <WaterIcon className="text-xl text-indigo-700" />
-                <span>
-                  {ph ?? "N/A"}
-                  {ph && "%"}
-                </span>
-                <Tooltip className="hidden group-hover:block group-hover:absolute left-1/4 top-full w-max">
-                  pH: Acidity
-                </Tooltip>
-              </div>
-            </div>
+    <>
+      <Toast />
+      <Card className="py-2">
+        <div className="grid grid-cols-[auto_1fr] gap-6">
+          <div className="w-16 h-16 relative mt-2">
+            <Image
+              className="object-contain"
+              src={image_url ?? ""}
+              fill
+              alt={name}
+            />
           </div>
-          <div className="flex justify-between items-center flex-col sm:flex-row space-y-4 sm:space-y-0">
-            <div className="flex items-center space-x-4 justify-between w-full sm:w-auto">
-              <Button
-                className="h-8 w-8 p-0 rounded-full flex justify-center items-center"
-                onClick={handleIncrement}
-              >
-                <PlusIcon className="w-5 h-5" />
-              </Button>
-              <input
-                className="border border-gray-300 w-12 h-10 text-sm text-center text rounded-md"
-                onChange={handleChange}
-                type="number"
-                step={0}
-                value={beerCount}
-                onBlur={() => setCount(count)}
-              />
-              <Button
-                className="h-8 w-8 p-0 rounded-full flex justify-center items-center"
-                onClick={handleDecrement}
-              >
-                <MinusIcon className="w-5 h-5" />
-              </Button>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <p className="font-bold text-base sm:text-xl">{name}</p>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 group relative">
+                  <BeerMugIcon className="text-xl text-amber-700" />
+                  <span>
+                    {abv ?? "N/A"}
+                    {abv && "%"}
+                  </span>
+                  <Tooltip className="hidden group-hover:block group-hover:absolute left-1/4 top-full w-max">
+                    ABV: Alcohol by volume
+                  </Tooltip>
+                </div>
+                <span className="text-gray-300">|</span>
+                <div className="flex items-center space-x-2 group relative">
+                  <WaterIcon className="text-xl text-indigo-700" />
+                  <span>
+                    {ph ?? "N/A"}
+                    {ph && "%"}
+                  </span>
+                  <Tooltip className="hidden group-hover:block group-hover:absolute left-1/4 top-full w-max">
+                    pH: Acidity
+                  </Tooltip>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-x-4 w-full sm:w-auto sm:space-y-0">
-              {beerCount !== count && (
+            <div className="flex justify-between items-center flex-col sm:flex-row space-y-4 sm:space-y-0">
+              <div className="flex items-center space-x-4 justify-between w-full sm:w-auto">
+                <Button
+                  className="h-8 w-8 p-0 rounded-full flex justify-center items-center"
+                  onClick={handleIncrement}
+                >
+                  <PlusIcon className="w-5 h-5" />
+                </Button>
+                <input
+                  className="border border-gray-300 w-12 h-10 text-sm text-center text rounded-md"
+                  onChange={handleChange}
+                  type="number"
+                  step={0}
+                  value={beerCount}
+                  onBlur={() => setBeerCount(count)}
+                />
+                <Button
+                  className="h-8 w-8 p-0 rounded-full flex justify-center items-center"
+                  onClick={handleDecrement}
+                >
+                  <MinusIcon className="w-5 h-5" />
+                </Button>
+              </div>
+              <div className="flex flex-col sm:flex-row space-y-4 sm:space-x-4 w-full sm:w-auto sm:space-y-0">
+                {beerCount !== count && (
+                  <Button
+                    variant="secondary"
+                    className="h-8 w-full sm:w-8 p-0 sm:rounded-full flex justify-center items-center text-green-600 ring-green-400 disabled:ring-green-200 disabled:text-green-300"
+                    onClick={saveBeerCountChanges}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <PulseLoader size={2} color="rgb(22 163 74)" />
+                    ) : (
+                      <>
+                        <CheckIcon className="w-5 h-5 hidden sm:block" />
+                        <span className="sm:hidden">Save</span>
+                      </>
+                    )}
+                  </Button>
+                )}
                 <Button
                   variant="secondary"
-                  className="h-8 w-full sm:w-8 p-0 sm:rounded-full flex justify-center items-center text-green-600 ring-green-400"
+                  className="h-8 w-full sm:w-8 p-0 sm:rounded-full flex justify-center items-center text-red-500 ring-red-400"
+                  disabled={loading}
+                  onClick={() => {
+                    deleteBeer(beer_id, list_id);
+                  }}
                 >
-                  <CheckIcon className="w-5 h-5 hidden sm:block" />
-                  <span className="sm:hidden">Save</span>
+                  <TrashIcon className="w-5 h-5 hidden sm:block" />
+                  <span className="sm:hidden">Delete</span>
                 </Button>
-              )}
-              <Button
-                variant="secondary"
-                className="h-8 w-full sm:w-8 p-0 sm:rounded-full flex justify-center items-center text-red-500 ring-red-400"
-              >
-                <TrashIcon className="w-5 h-5 hidden sm:block" />
-                <span className="sm:hidden">Delete</span>
-              </Button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </>
   );
 };
 

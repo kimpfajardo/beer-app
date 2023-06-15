@@ -5,9 +5,10 @@ import { HTMLAttributes } from "react";
 
 export interface LogoProps extends HTMLAttributes<HTMLHeadingElement> {
   size?: "sm" | "md" | "lg";
+  inverted?: boolean;
 }
 
-export const Logo = ({ className, size = "sm" }: LogoProps) => {
+export const Logo = ({ className, size = "sm", inverted }: LogoProps) => {
   const sizes = {
     sm: "text-2xl",
     md: "text-3xl",
@@ -20,10 +21,14 @@ export const Logo = ({ className, size = "sm" }: LogoProps) => {
           lobster.className,
           className,
           sizes[size as keyof typeof sizes],
-          "text-indigo-600"
+          "text-indigo-600",
+          inverted && "text-white"
         )}
       >
-        <span className="text-amber-600">Ale</span>manac
+        <span className={cn("text-amber-600", inverted && "text-amber-300")}>
+          Ale
+        </span>
+        manac
       </h1>
     </Link>
   );

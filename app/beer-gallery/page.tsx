@@ -1,11 +1,7 @@
 import { Toast } from "@/components/Toast";
 import { BeerListContainer } from "@/containers/BeerList";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export default function Products() {
-
   return (
     <>
       <Toast />

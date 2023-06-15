@@ -1,17 +1,16 @@
 "use client";
-import { createShoppingList, fetchShoppingList } from "@/utils/functions";
+import { fetchShoppingList } from "@/utils/functions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { User } from "@supabase/supabase-js";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   ReactNode,
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
-import { set } from "zod";
 
 export interface UserType extends User {
   firstName: string;
@@ -24,7 +23,6 @@ export interface UserType extends User {
 export interface AuthContextType {
   user: User | null;
   signOut: () => void;
-  getSession: () => Promise<any>;
   shoppingListData: {
     [x: string]: any;
   } | null;
@@ -42,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const supabase = createClientComponentClient();
 
-  const getUser = async () => {
+  const getUser = useCallback(async () => {
     try {
       const { data } = await supabase.auth.getUser();
       const { user: userData } = data;
@@ -50,51 +48,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const getSession = async () => {
-    try {
-      const { data } = await supabase.auth.getSession();
-      const { session } = data;
-      return session;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleShoppingList = async () => {
-    const { data, error: shoppingListError } = await fetchShoppingList(
-      user?.id as string,
-      supabase
-    );
-    const hasNoShoppingList = !shoppingListError && data?.length === 0;
-    if (hasNoShoppingList) {
-      return await createShoppingList(
-        user?.id as string,
-        supabase,
-        handleShoppingList
-      );
-    }
-    if ((data ?? [])?.length > 0) {
-      setShoppingListData(data?.[0] ?? null);
-      return;
-    }
-  };
+  }, [supabase]);
 
   useEffect(() => {
+    const getSession = async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        const { session } = data;
+        return session;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const session = getSession();
     session.then((sessionData) => {
       if (sessionData) {
         getUser();
       }
     });
-  }, []);
+  }, [supabase, getUser]);
 
   useEffect(() => {
     if (user) {
+      const handleShoppingList = async () => {
+        const { data, error: shoppingListError } = await fetchShoppingList(
+          user?.id as string,
+          supabase
+        );
+        setShoppingListData(data?.[0] ?? null);
+      };
       handleShoppingList();
     }
-  }, [user]);
+  }, [user, supabase]);
 
   const signOut = () => {
     supabase.auth.signOut();
@@ -106,7 +92,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         signOut,
-        getSession,
         shoppingListData,
       }}
     >

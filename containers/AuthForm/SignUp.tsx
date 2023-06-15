@@ -2,23 +2,17 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
-import { Logo } from "@/components/Logo";
 import { InputError } from "@/components/InputError";
-import { Checkbox } from "@/components/Checkbox";
-import { Anchor } from "@/components/Anchor";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import zxcvbn from "zxcvbn";
-import { cn } from "@/utils/functions";
-import { Fragment, useMemo, useState } from "react";
+import { cn, createShoppingList } from "@/utils/functions";
+import { useMemo, useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
-import { Menu, Transition } from "@headlessui/react";
-import Datepicker from "@/components/DatePicker";
 import { Toast } from "@/components/Toast";
 import { toast } from "react-toastify";
-import { useAuthContext } from "@/context/UserContext";
+import supabaseAdmin from "@/supabase/admin";
 
 const validationSchema = z.object({
   firstName: z.string().nonempty("This field is required"),
@@ -97,11 +91,19 @@ export const SignUpForm = ({
       },
     });
 
-    if (!res.error) {
-      toast.success("Sign up successful! Check your email for confirmation.");
-      reset();
-      setLoading(false);
-      setIsSignIn(true);
+    if (!res.error && res.data.user) {
+      await createShoppingList(
+        res.data.user.id as string,
+        supabaseAdmin,
+        () => {
+          toast.success(
+            "Sign up successful! Check your email for confirmation."
+          );
+          reset();
+          setLoading(false);
+          setIsSignIn(true);
+        }
+      );
 
       return;
     }

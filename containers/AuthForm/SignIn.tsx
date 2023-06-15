@@ -1,5 +1,5 @@
 "use client";
-import { SubmitHandler, set, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import { InputError } from "@/components/InputError";
@@ -8,14 +8,8 @@ import { Anchor } from "@/components/Anchor";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useAuthContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
-import {
-  User,
-  createClientComponentClient,
-  createServerActionClient,
-} from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "react-toastify";
 
 const validationSchema = z.object({
@@ -62,22 +56,27 @@ export const SignInForm = ({
     });
 
     if (!res.error) {
+      const handleShoppingList = await supabase
+        .from("shopping_list")
+        .select("*")
+        .eq("user_id", res?.data?.user.id);
+
+      if (!handleShoppingList.error) {
+        const hasShoppingList = handleShoppingList.data.length > 0;
+        if (!hasShoppingList) {
+          await supabase
+            .from("shopping_list")
+            .insert({ user_id: res?.data?.user.id });
+        }
+      }
       await toast.success(
-        `Welcome back,${res.data.user.user_metadata.first_name}!`,
+        `Welcome back, ${res.data.user.user_metadata.first_name}!`,
         {
           icon: "👋",
           autoClose: 1000,
+          pauseOnHover: false,
           async onClose(props) {
-            const shoppingList = await supabase
-              .from("shopping-list")
-              .select("*")
-              .eq("user_id", res.data.user?.id);
-            if (!shoppingList.error && (shoppingList?.data).length === 0) {
-              await supabase
-                .from("shopping-list")
-                .insert({ user_id: res.data.user?.id, created_at: new Date() });
-            }
-            router.refresh();
+            router.push("/beer-gallery");
           },
         }
       );

@@ -13,14 +13,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 const navigation = [
@@ -40,19 +34,6 @@ export const Navigation = () => {
   const supabase = createClientComponentClient();
 
   const goToShoppingList = async () => {
-    const shoppingList = await supabase
-      .from("shopping-list")
-      .select("*")
-      .eq("user_id", user?.id);
-    if (!shoppingList.error && (shoppingList?.data).length === 0) {
-      await supabase
-        .from("shopping-list")
-        .insert({ user_id: user?.id, created_at: new Date() });
-      if (!shoppingList.error) {
-        router.push("/shopping-list");
-      }
-      return;
-    }
     router.push("/shopping-list");
   };
 
@@ -74,8 +55,8 @@ export const Navigation = () => {
       as="header"
       className={({ open }) =>
         cn(
-          open ? "fixed inset-0 z-40 overflow-y-auto" : "",
-          "bg-white shadow-sm lg:static lg:overflow-y-visible"
+          open ? "fixed inset-0 z-40 overflow-y-auto" : "sticky top-0 z-40",
+          "bg-white shadow-sm lg:overflow-y-visible"
         )
       }
     >
@@ -129,7 +110,7 @@ export const Navigation = () => {
                   className="ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   onClick={goToShoppingList}
                 >
-                  <span className="sr-only">View notifications</span>
+                  <span className="sr-only">View shopping list</span>
                   <ShoppingBagIcon
                     className="h-6 w-6 text-black"
                     aria-hidden="true"
@@ -191,16 +172,18 @@ export const Navigation = () => {
           >
             <div className="border-t border-gray-200 pb-3 pt-4">
               <div className="mx-auto flex max-w-3xl items-center justify-between px-4 sm:px-6 space-x-2">
-                <div className="flex-shrink-0">
-                  <AvatarIcon className="h-10 w-10 rounded-full text-gray-300 ring-1 ring-gray-100" />
-                </div>
-                <div className="ml-3">
-                  <div className="text-base font-bold text-gray-800">
-                    {user?.user_metadata?.first_name ?? ""}{" "}
-                    {user?.user_metadata?.last_name ?? ""}
+                <div className="flex space-x-4">
+                  <div className="flex-shrink-0">
+                    <AvatarIcon className="h-10 w-10 rounded-full text-gray-300 ring-1 ring-gray-100" />
                   </div>
-                  <div className="text-xs text-gray-400">
-                    {user?.email ?? ""}
+                  <div className="ml-3">
+                    <div className="text-base font-bold text-gray-800">
+                      {user?.user_metadata?.first_name ?? ""}{" "}
+                      {user?.user_metadata?.last_name ?? ""}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      {user?.email ?? ""}
+                    </div>
                   </div>
                 </div>
                 <button
@@ -208,7 +191,7 @@ export const Navigation = () => {
                   className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   onClick={goToShoppingList}
                 >
-                  <span className="sr-only">View notifications</span>
+                  <span className="sr-only">View shopping list</span>
                   <ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>

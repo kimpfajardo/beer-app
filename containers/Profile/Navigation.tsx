@@ -1,5 +1,4 @@
 "use client";
-import { AvatarIcon } from "@/components/Icons";
 import { cn } from "@/utils/functions";
 import { Menu, Transition } from "@headlessui/react";
 import { Bars3Icon } from "@heroicons/react/20/solid";

@@ -1,6 +1,4 @@
-import { BeerMugIcon } from "@/components/Icons";
 import { ReactNode } from "react";
-import { custom } from "zod";
 
 export const DetailFields = ({
   label,

@@ -5,6 +5,23 @@ import { twMerge } from "tailwind-merge";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
+export const modifyDrawerState = (arr: boolean[], index: number): boolean[] => {
+  if (arr[index] === undefined) {
+    throw new Error("Invalid index");
+  }
+
+  const newValue = !arr[index];
+  arr[index] = newValue;
+
+  if (newValue) {
+    arr.fill(true, 0, index);
+  } else {
+    arr.fill(false, index + 1);
+  }
+
+  return arr;
+};
+
 // ADD TO SHOPPING LIST FUNCTION
 
 export const fetchShoppingList = async (
