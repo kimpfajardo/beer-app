@@ -6,40 +6,39 @@ Alemanac is a web app designed for beer enthusiasts and knowledge seekers. It me
 
 ## About the Developer 👨‍💻
 
-Alemanac is developed by Kim Fajardo, a front-end engineer with over four years of experience. When he's not improving Alemanac, Kim enjoys travel, fitness, and outdoor adventures.
+Alemanac is developed by [Kim Fajardo](https://kim-fajardo.vercel.app/), a front-end engineer with over four years of experience. When he's not improving Alemanac, Kim enjoys travel, fitness, and outdoor adventures.
 
 ## Features 🌟
 
 - **Explore Beers**: Discover new beers and learn about their origin, brewing techniques, and more.
-- **Community Interaction**: Share your personal reviews, participate in discussions, and attend virtual tastings.
 - **Personalization**: Save your favorite beers and recommendations for future reference.
 
 ## How to Use Alemanac 📖
 
 1. Visit [Alemanac](your_website_link)
-2. Start exploring beers or join the community discussion!
+2. Create an account
+3. Confirm Email
+4. Boom! You can now explore the beer gallery
 
 ## Technology Stack 🛠️
 
 Alemanac is built with:
 
-- React
-- [Other technologies]
+- React (ES6 & Typescript)
+- Nextjs 13 / App Router
+- Tailwind CSS
+- Supabase (implemented RLS)
+- Punk API (credits and thanks to @samjbmason and the contributors for putting out this API)
 
 ## Future Plans 🔮
 
-The future of Alemanac includes [your plans].
-
-## Contributing 🤝
-
-We love contributions! Please see our [Contributor's Guide](link_to_your_contributing_guide) for more information.
-
-## License 📄
-
-This project is licensed under the [Your License] - see the [LICENSE.md](link_to_your_license_file) file for details
+- UI/UX Improvement (I'm not a UI designer but currently learning UI/UX principles)
+- Optimize Async Calls
+- Add loaders & skeletons
 
 ## Contact 📧
 
-Feel free to reach out to me at [your_email@domain.com](mailto:your_email@domain.com) if you have any questions or suggestions!
+Feel free to reach out to me at [kim.p.fajardo@gmail.com](mailto:kim.p.fajardo@gmail.com) if you have any questions or suggestions!
+Also check out my [portfolio](https://kim-fajardo.vercel.app/)!
 
 Remember, drink responsibly! 🍻
