@@ -27,14 +27,14 @@ export default function Page() {
   );
   const supabase = createClientComponentClient();
 
-   const defaultOptions = {
-     loop: true,
-     autoplay: true,
-     animationData: animationData,
-     rendererSettings: {
-       preserveAspectRatio: "xMidYMid slice",
-     },
-   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const deleteBeer = async (beerId: number, listId: string) => {
     const newBeers = tempBeer.filter((beer) => beer.beer_id !== beerId);
@@ -82,15 +82,10 @@ export default function Page() {
             </div>
           </div>
         </div>
-        {beers.length > 0 && (
-          <>
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
-              <FilterMenu value={filter} onChange={updateFilter} />
-              <SortMenu value={sort} onChange={updateSort} />
-            </div>
-          </>
-        )}
-
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+          <FilterMenu value={filter} onChange={updateFilter} />
+          <SortMenu value={sort} onChange={updateSort} />
+        </div>
         <div className="gap-4 flex flex-col-reverse">
           {beers.length === 0 && (
             <div className="space-y-4">
