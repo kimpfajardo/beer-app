@@ -147,7 +147,6 @@ export const ShopListCard = ({
                   type="number"
                   step={0}
                   value={beerCount}
-                  onBlur={() => setBeerCount(count)}
                 />
                 <Button
                   className="h-8 w-8 p-0 rounded-full flex justify-center items-center"
