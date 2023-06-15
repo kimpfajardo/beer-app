@@ -17,15 +17,15 @@ export const FilterPills = ({
   const filterColors = {
     [Filter.ALL]: {
       color: "bg-gray-400 text-white",
-      hoverColor: "hover:bg-gray-300 hover:text-white",
+      hoverColor: "lg:hover:bg-gray-300 lg:hover:text-white",
     },
     [Filter.HIGH_ABV]: {
       color: "bg-amber-600 text-white",
-      hoverColor: "hover:bg-amber-500 hover:text-white",
+      hoverColor: "lg:hover:bg-amber-500 lg:hover:text-white",
     },
     [Filter.HIGH_ACIDITY]: {
       color: "bg-indigo-600 text-white",
-      hoverColor: "hover:bg-indigo-500 hover:text-white",
+      hoverColor: "lg:hover:bg-indigo-500 lg:hover:text-white",
     },
   };
   return (
