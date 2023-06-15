@@ -1,4 +1,4 @@
-import { LayoutProps } from "@/.next/types/app/layout";
+import { LayoutProps } from "@/.next/types/app/page";
 import { Navigation } from "@/containers/Layouts/Navigation";
 import { BeerProvider } from "@/context/BeersContext";
 import { inter } from "@/utils/fonts";

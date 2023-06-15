@@ -9,7 +9,7 @@ import { BeerType } from "@/mockBeer";
 import { redirect } from "next/navigation";
 import { Introduction } from "@/containers/BeerDetails/Introduct";
 
-export const getBeerDetails = async (id: string) => {
+const getBeerDetails = async (id: string) => {
   const res = await fetch(`https://api.punkapi.com/v2/beers?ids=${id}`);
   const data = await res.json();
   return data;

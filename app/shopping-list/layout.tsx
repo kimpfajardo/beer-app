@@ -1,4 +1,3 @@
-import { LayoutProps } from "@/.next/types/app/layout";
 import { Logo } from "@/components/Logo";
 import { Navigation } from "@/containers/ShoppingList/Navigation";
 import { ShoppingListProvider } from "@/context/ShoppingList";
@@ -7,8 +6,9 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import { cookies } from "next/headers";
 import { BeerType } from "@/mockBeer";
+import { LayoutProps } from "@/.next/types/app/page";
 
-export const getBeerList = async () => {
+const getBeerList = async () => {
   const supabase = createServerComponentClient({ cookies });
   const {
     data: { session },
@@ -31,7 +31,7 @@ export const getBeerList = async () => {
   return shoppingListItems;
 };
 
-export const getBeerDataById = async (
+const getBeerDataById = async (
   beerList: {
     [x: string]: any;
   }[]
