@@ -1,34 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Alemanac 🍺
 
-## Getting Started
+![Alemanac Banner](./path/to/your/banner/image.png)
 
-First, run the development server:
+Alemanac is a web app designed for beer enthusiasts and knowledge seekers. It merges the love for beer and the power of knowledge, providing a platform for users to explore the diverse universe of beers and appreciate the stories behind them.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## About the Developer 👨‍💻
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Alemanac is developed by Kim Fajardo, a front-end engineer with over four years of experience. When he's not improving Alemanac, Kim enjoys travel, fitness, and outdoor adventures.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features 🌟
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Explore Beers**: Discover new beers and learn about their origin, brewing techniques, and more.
+- **Community Interaction**: Share your personal reviews, participate in discussions, and attend virtual tastings.
+- **Personalization**: Save your favorite beers and recommendations for future reference.
 
-## Learn More
+## How to Use Alemanac 📖
 
-To learn more about Next.js, take a look at the following resources:
+1. Visit [Alemanac](your_website_link)
+2. Start exploring beers or join the community discussion!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technology Stack 🛠️
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Alemanac is built with:
 
-## Deploy on Vercel
+- React
+- [Other technologies]
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Future Plans 🔮
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The future of Alemanac includes [your plans].
+
+## Contributing 🤝
+
+We love contributions! Please see our [Contributor's Guide](link_to_your_contributing_guide) for more information.
+
+## License 📄
+
+This project is licensed under the [Your License] - see the [LICENSE.md](link_to_your_license_file) file for details
+
+## Contact 📧
+
+Feel free to reach out to me at [your_email@domain.com](mailto:your_email@domain.com) if you have any questions or suggestions!
+
+Remember, drink responsibly! 🍻
