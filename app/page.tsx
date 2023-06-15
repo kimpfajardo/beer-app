@@ -61,7 +61,7 @@ export default function Home() {
       </div>
       <div className="h-full flex flex-col lg:flex-row lg:items-center ">
         <section className="mx-auto max-w-[640px] h-screen lg:h-auto lg:max-w-max lg:mx-0 relative">
-          <div className="h-full flex flex-col justify-between">
+          <div className="h-full flex flex-col">
             <div className="lg:max-w-[640px] p-4">
               <Logo
                 className="text-center lg:text-left py-6 lg:py-0"
@@ -84,7 +84,7 @@ export default function Home() {
                 </Button>
               </div>
             </div>
-            <div className="mt-auto lg:hidden mb-6 flex justify-center w-full">
+            <div className="mt-24 lg:hidden mb-6 flex justify-center w-full">
               <div onClick={() => scrollToNextSection(1)}>
                 <Lottie
                   options={defaultOptions(scrollDown)}
