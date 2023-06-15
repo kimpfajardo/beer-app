@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { Folder, GitHub, Link } from "react-feather";
 
 export const About = () => {
@@ -33,6 +34,9 @@ export const About = () => {
 };
 
 export const Developer = () => {
+  const openInNewTab = (url: string) => {
+    window.open(url, "_blank", "noreferrer");
+  };
   return (
     <>
       <h3 className="font-bold text-2xl mb-2 hidden lg:block">
@@ -60,22 +64,20 @@ export const Developer = () => {
       significantly shorter. If there are any other adjustments you&apos;d like,
       please let me know.
       <div className="mt-10 flex space-x-4 ">
-        <Link
+        <button
           className="flex space-x-4 items-center py-2 px-3 rounded-lg hover:bg-amber-500 w-max transition"
-          href="https://github.com/kimpfajardo"
-          target="_blank"
+          onClick={() => openInNewTab("https://github.com/kimpfajardo")}
         >
           <GitHub />
           <span>Github</span>
-        </Link>
-        <Link
+        </button>
+        <button
           className="flex space-x-4 items-center py-2 px-3 rounded-lg hover:bg-amber-500 w-max transition"
-          href="https://kim-fajardo.vercel.app/"
-          target="_blank"
+          onClick={() => openInNewTab("https://kim-fajardo.vercel.app/")}
         >
           <Folder />
           <span>Portfolio</span>
-        </Link>
+        </button>
       </div>
     </>
   );
