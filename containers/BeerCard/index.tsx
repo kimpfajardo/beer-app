@@ -5,11 +5,13 @@ import { AddToShopList } from "../AddToShopList";
 import { BeerMugIcon, WaterIcon } from "@/components/Icons";
 import { BeerType } from "@/mockBeer";
 import Link from "next/link";
+import { User } from "@supabase/supabase-js";
 export interface BeerCardProps {
   details: BeerType;
+  user: User
 }
 
-export const BeerCard = ({ details }: BeerCardProps) => {
+export const BeerCard = ({ details, user }: BeerCardProps) => {
   const [mouseLeft, ref] = useMouseLeave();
   const { name, tagline, image_url, abv, ph, id } = details;
 
@@ -19,7 +21,7 @@ export const BeerCard = ({ details }: BeerCardProps) => {
       ref={ref}
     >
       <div className="group-hover:block hidden absolute -mt-4">
-        <AddToShopList mouseLeft={mouseLeft} id={id} />
+        <AddToShopList mouseLeft={mouseLeft} id={id} user={user} />
       </div>
       <div className="flex justify-center cursor-pointer h-[250px] relative">
         <Link className="hidden lg:block" href={`/beer-details/${id}`} prefetch>

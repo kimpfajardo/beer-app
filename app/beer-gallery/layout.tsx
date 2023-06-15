@@ -10,7 +10,6 @@ export const metadata = {
 
 export default async function Layout({
   children,
-  ...props
 }: {
   children: React.ReactNode;
 }) {

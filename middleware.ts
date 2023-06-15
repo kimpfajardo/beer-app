@@ -8,23 +8,6 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-
-  if (session && !user) {
-    const x = await supabase.auth.signOut();
-    console.log('LOGOUT', x)
-    const url = req.nextUrl.clone();
-    // url.pathname = "/auth";
-    // url.searchParams.delete("filter");
-    return res;
-  }
-
-  if (!session && req.nextUrl.pathname === "/") {
-    return res;
-  }
   if (!session && req.nextUrl.pathname !== "/auth") {
     const url = req.nextUrl.clone();
     url.pathname = "/auth";

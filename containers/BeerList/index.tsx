@@ -5,21 +5,22 @@ import { HashLoader } from "react-spinners";
 import { Filters } from "../Filters";
 import { FilterDetails } from "../FilterDetails";
 import { Toast } from "@/components/Toast";
+import { User } from "@supabase/supabase-js";
 
-export const BeerList = () => {
+export const BeerList = ({ user }: { user: User }) => {
   const { beers } = useBeerList();
   return (
     <>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4 sm:px-0">
         {beers.map((item, index) => (
-          <BeerCard details={item} key={`beer-${index}`} />
+          <BeerCard details={item} key={`beer-${index}`} user={user} />
         ))}
       </div>
     </>
   );
 };
 
-export const BeerListContainer = () => {
+export const BeerListContainer = ({ user }: { user: User }) => {
   const { loading } = useBeerList();
   return (
     <>
@@ -34,7 +35,7 @@ export const BeerListContainer = () => {
           <Filters />
           <FilterDetails />
           <div className="py-4">
-            <BeerList />
+            <BeerList user={user}/>
           </div>
         </div>
       )}

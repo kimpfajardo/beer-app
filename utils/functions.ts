@@ -1,3 +1,4 @@
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { ClassValue, clsx } from "clsx";
 import { toast } from "react-toastify";
@@ -76,14 +77,13 @@ export const addNewBeerToShoppingList = async (
   qty: number,
   beerId: number
 ) => {
-  const insertRes = await supabase
-    .from("beers")
-    .insert({
-      beer_id: beerId,
-      list_id: shoppingListId,
-      count: qty,
-      created_at: new Date(),
-    });
+  const localSupabase = createClientComponentClient()
+  const insertRes = await localSupabase.from("beers").insert({
+    beer_id: beerId,
+    list_id: shoppingListId,
+    count: qty,
+    created_at: new Date(),
+  });
   if (insertRes.error) {
     toast.error(insertRes.error.message);
     return;

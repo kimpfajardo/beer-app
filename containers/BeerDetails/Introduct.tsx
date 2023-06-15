@@ -9,6 +9,7 @@ import { useState } from "react";
 import useMouseLeave from "use-mouse-leave";
 import { AddToShopList } from "../AddToShopList";
 import { Toast } from "@/components/Toast";
+import { User } from "@supabase/supabase-js";
 
 export const Introduction = ({
   image_url,
@@ -17,7 +18,7 @@ export const Introduction = ({
   first_brewed,
   name,
   id,
-}: Partial<BeerType>) => {
+}: Partial<BeerType> ) => {
   const date = moment(first_brewed ?? "", "MM/YYYY");
   const [mouseLeft, ref] = useMouseLeave();
   const [qty, setCount] = useState<number>(1 as number);

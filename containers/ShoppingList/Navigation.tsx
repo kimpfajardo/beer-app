@@ -19,15 +19,17 @@ export const Navigation = () => {
 
   const pathName = usePathname();
   const signOut = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      router.replace("/");
+    }
   };
   const navigation = useMemo(() => {
     return pathName === "/shopping-list"
       ? navigationList.filter((item) => item.href !== "/shopping-list")
       : navigationList;
   }, [pathName]);
-  
+
   return (
     <Menu as="div" className="relative ml-5 flex-shrink-0">
       <div>

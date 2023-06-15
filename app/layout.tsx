@@ -2,8 +2,12 @@ import { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "@/context/UserContext";
-import supabase from "@/supabase";
 import { redirect } from "next/navigation";
+import {
+  User,
+  createServerComponentClient,
+} from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,15 +22,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = supabase.auth.getSession();
-  if (!session) {
-    redirect("/auth");
-  }
+  const supabase = createServerComponentClient({ cookies });
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider user={session?.user as User}>{children}</AuthProvider>
       </body>
     </html>
   );

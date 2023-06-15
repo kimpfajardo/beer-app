@@ -1,10 +1,6 @@
 import React from "react";
 import { BreadCrumbs } from "@/containers/BreadCrumbs/BeerDetails";
-import {
-  BrewerTips,
-  Details,
-  FoodPairing,
-} from "@/containers/BeerDetails";
+import { BrewerTips, Details, FoodPairing } from "@/containers/BeerDetails";
 import { BeerType } from "@/mockBeer";
 import { redirect } from "next/navigation";
 import { Introduction } from "@/containers/BeerDetails/Introduct";

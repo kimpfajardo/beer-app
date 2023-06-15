@@ -11,7 +11,10 @@ import {
   PlusIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/20/solid";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import {
+  User,
+  createClientComponentClient,
+} from "@supabase/auth-helpers-nextjs";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -25,36 +28,35 @@ export const AddToShopList = ({
   const [show, setShow] = useState<boolean>(false);
   const [qty, setQty] = useState<number>(1);
   const supabase = createClientComponentClient();
+
   const [loading, setLoading] = useState(false);
-  const { user, shoppingListData } = useAuthContext();
+  const { shoppingListData } = useAuthContext();
 
   const addToShoppingList: () => void = useCallback(async () => {
-    if (user) {
-      const hasShopListData = !!shoppingListData;
-      if (!hasShopListData) {
-        toast.error("Something went wrong. Please try again later.");
-        return;
-      }
-      const shoppingListId = shoppingListData.list_id;
-      const shoppingListItems = await supabase
-        .from("beers")
-        .select("*")
-        .eq("list_id", shoppingListId);
-      if (shoppingListItems.error) {
-        toast.error("Something went wrong. Please try again later.");
-        return;
-      }
-      const shoppingListItemsData = shoppingListItems?.data ?? [];
-      const filteredBeerList = shoppingListItemsData.filter(
-        (item) => item.beer_id == id
-      );
-      if (filteredBeerList.length > 0) {
-        updateBeerItemCount(filteredBeerList[0], supabase, qty);
-      } else {
-        addNewBeerToShoppingList(shoppingListId, supabase, qty, id);
-      }
+    const hasShopListData = !!shoppingListData;
+    if (!hasShopListData) {
+      toast.error("Something went wrong. Please try again later.");
+      return;
     }
-  }, [qty, user, id, supabase, shoppingListData]);
+    const shoppingListId = shoppingListData.list_id;
+    const shoppingListItems = await supabase
+      .from("beers")
+      .select("*")
+      .eq("list_id", shoppingListId);
+    if (shoppingListItems.error) {
+      toast.error("Something went wrong. Please try again later.");
+      return;
+    }
+    const shoppingListItemsData = shoppingListItems?.data ?? [];
+    const filteredBeerList = shoppingListItemsData.filter(
+      (item) => item.beer_id == id
+    );
+    if (filteredBeerList.length > 0) {
+      updateBeerItemCount(filteredBeerList[0], supabase, qty);
+    } else {
+      addNewBeerToShoppingList(shoppingListId, supabase, qty, id);
+    }
+  }, [qty, id, supabase, shoppingListData]);
 
   useEffect(() => {
     if (mouseLeft) {

@@ -106,8 +106,10 @@ export const Actions = () => {
 
   const signOut = async () => {
     setLoading(true);
-    await supabase.auth.signOut();
-    router.refresh();
+    const {error} = await supabase.auth.signOut();
+    if (!error){
+      router.replace("/");
+    }
   };
 
   return (

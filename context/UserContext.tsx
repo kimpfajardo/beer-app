@@ -32,40 +32,18 @@ export const AuthContext = createContext<AuthContextType>(
   {} as AuthContextType
 );
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+export const AuthProvider = ({
+  children,
+  user,
+}: {
+  children: ReactNode;
+  user: User;
+}) => {
   const [shoppingListData, setShoppingListData] = useState<{
     [x: string]: any;
   } | null>(null);
   const supabase = createClientComponentClient();
-
-  const getUser = useCallback(async () => {
-    const { data, error } = await supabase.auth.getUser();
-    const { user: userData } = data;
-    if (error) {
-      return;
-    }
-    setUser(userData);
-  }, [supabase]);
-
-  useEffect(() => {
-    const getSession = async () => {
-      try {
-        const { data } = await supabase.auth.getSession();
-        const { session } = data;
-        return session;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const session = getSession();
-    session.then((sessionData) => {
-      if (sessionData) {
-        getUser();
-      }
-    });
-  }, [supabase, getUser]);
+  const router = useRouter();
 
   useEffect(() => {
     if (user) {
@@ -85,9 +63,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user, supabase]);
 
-  const signOut = () => {
-    supabase.auth.signOut();
-    getUser();
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      router.replace("/");
+    }
   };
 
   return (
