@@ -1,5 +1,4 @@
-import { useRouter } from "next/navigation";
-import { Folder, GitHub, Link } from "react-feather";
+import { Folder, GitHub } from "react-feather";
 
 export const About = () => {
   return (
@@ -7,28 +6,33 @@ export const About = () => {
       <b>Alemanac</b> is the world&apos;s first and only digital platform
       specially brewed for beer enthusiasts and knowledge seekers. Our name is a
       playful blend of &apos;Ale&apos;, a beloved type of beer with rich history
-      and taste, and &apos;Almanacv, a traditional handbook filled with a wealth
-      of information. Alemanac embodies this spirit, offering a unique blend of
-      beer lore, brewing wisdom, and community interaction. <br />
-      <br />
-      At Alemanac, we believe that every pint has a story to tell. Our platform
-      enables you to explore and discover these stories, offering in-depth
-      insights about ales from all over the world, from the well-known to the
-      hidden gems. Whether you&apos;re a casual beer drinker, a homebrewer, or a
-      beer connoisseur, Alemanac is your go-to resource to learn about different
-      beer styles, brewing techniques, pairing suggestions, and much more.{" "}
+      and taste, and &apos;Almanac&apos;, a traditional handbook filled with a
+      wealth of information.
       <br />
       <br />
-      But Alemanac is more than just an encyclopedia of ales. It&apos;s also a
-      vibrant community of like-minded ale enthusiasts from around the globe.
-      Share your personal reviews, participate in engaging discussions, attend
-      virtual tastings, and even share your own homebrew recipes.
-      <br />
-      <br />
-      Join us in this journey of exploration and camaraderie. Alemanac is where
-      your love for a great pint and the thirst for knowledge come together.
-      Grab your favorite beer, sit back, and explore the wonderful world of ales
-      with Alemanac. Cheers to knowledge, one pint at a time!
+      Alemanac embodies this spirit, offering a unique blend of beer lore,
+      brewing wisdom, and community interaction. <br />
+      <div className="hidden sm:block">
+        <br />
+        At Alemanac, we believe that every pint has a story to tell. Our
+        platform enables you to explore and discover these stories, offering
+        in-depth insights about ales from all over the world, from the
+        well-known to the hidden gems. Whether you&apos;re a casual beer
+        drinker, a homebrewer, or a beer connoisseur, Alemanac is your go-to
+        resource to learn about different beer styles, brewing techniques,
+        pairing suggestions, and much more. <br />
+        <br />
+        But Alemanac is more than just an encyclopedia of ales. It&apos;s also a
+        vibrant community of like-minded ale enthusiasts from around the globe.
+        Share your personal reviews, participate in engaging discussions, attend
+        virtual tastings, and even share your own homebrew recipes.
+        <br />
+        <br />
+        Join us in this journey of exploration and camaraderie. Alemanac is
+        where your love for a great pint and the thirst for knowledge come
+        together. Grab your favorite beer, sit back, and explore the wonderful
+        world of ales with Alemanac. Cheers to knowledge, one pint at a time!
+      </div>
     </>
   );
 };
@@ -40,7 +44,7 @@ export const Developer = () => {
   return (
     <>
       <h3 className="font-bold text-2xl mb-2 hidden lg:block">
-        About Kim Fajardo{" "}
+        The developer{" "}
       </h3>
       Hello! I&apos;m Kim Fajardo, the front-end engineer behind Alemanac. With
       a love for beer and a passion for technology, I&apos;ve created this
@@ -58,11 +62,6 @@ export const Developer = () => {
       enthusiasts can explore, learn, and appreciate the stories behind their
       favorite brews. Remember, every celebration becomes more memorable with a
       good toast, but always drink responsibly!
-      <br />
-      <br />
-      This revised version maintains the key points of your story while being
-      significantly shorter. If there are any other adjustments you&apos;d like,
-      please let me know.
       <div className="mt-10 flex space-x-4 ">
         <button
           className="flex space-x-4 items-center py-2 px-3 rounded-lg hover:bg-amber-500 w-max transition"

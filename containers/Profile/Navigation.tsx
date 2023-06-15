@@ -9,7 +9,7 @@ import { Fragment } from "react";
 
 const ProfileNavigation = [
   { name: "View beer gallery", href: "/beer-gallery" },
-  { name: "View my shop list", href: "/shopping-list" },
+  { name: "View my shopping list", href: "/shopping-list" },
 ];
 
 export const Navigation = () => {

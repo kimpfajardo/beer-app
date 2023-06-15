@@ -8,7 +8,11 @@ export const metadata = {
   description: "Profile",
 };
 
-export default function ProfileLayout({ children }: LayoutProps) {
+export default function ProfileLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <body className={inter.className}>
       <div className="bg-slate-50 min-h-screen p-0 sm:p-6 lg:p-8">

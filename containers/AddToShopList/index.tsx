@@ -69,7 +69,7 @@ export const AddToShopList = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <Button
         className="p-2 absolute top-0 z-20 w-9 h-9"
         variant={"primary"}

@@ -3,7 +3,7 @@ import { Logo } from "@/components/Logo";
 import { Navigation } from "@/containers/ShoppingList/Navigation";
 import { inter } from "@/utils/fonts";
 
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <body className={inter.className}>
       <div className="bg-slate-50 min-h-screen p-0 sm:p-6 lg:p-8">

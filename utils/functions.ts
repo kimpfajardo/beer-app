@@ -78,7 +78,12 @@ export const addNewBeerToShoppingList = async (
 ) => {
   const insertRes = await supabase
     .from("beers")
-    .insert({ beer_id: beerId, list_id: shoppingListId, count: qty });
+    .insert({
+      beer_id: beerId,
+      list_id: shoppingListId,
+      count: qty,
+      created_at: new Date(),
+    });
   if (insertRes.error) {
     toast.error(insertRes.error.message);
     return;

@@ -56,19 +56,19 @@ export const SignInForm = ({
     });
 
     if (!res.error) {
-      const handleShoppingList = await supabase
-        .from("shopping_list")
-        .select("*")
-        .eq("user_id", res?.data?.user.id);
+      // const handleShoppingList = await supabase
+      //   .from("shopping_list")
+      //   .select("*")
+      //   .eq("user_id", res?.data?.user.id);
 
-      if (!handleShoppingList.error) {
-        const hasShoppingList = handleShoppingList.data.length > 0;
-        if (!hasShoppingList) {
-          await supabase
-            .from("shopping_list")
-            .insert({ user_id: res?.data?.user.id });
-        }
-      }
+      // if (!handleShoppingList.error) {
+      //   const hasShoppingList = handleShoppingList.data.length > 0;
+      //   if (!hasShoppingList) {
+      //     await supabase
+      //       .from("shopping_list")
+      //       .insert({ user_id: res?.data?.user.id });
+      //   }
+      // }
       await toast.success(
         `Welcome back, ${res.data.user.user_metadata.first_name}!`,
         {

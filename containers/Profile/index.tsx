@@ -81,7 +81,7 @@ export const ProfileNavigation = () => {
         onClick={goToShoppingList}
       >
         <ShoppingBagIcon className="w-5 h-5" />
-        <span>View my shop list</span>
+        <span>View my shopping list</span>
       </Button>
       <Button
         className="py-3 px-6 h-16 rounded-lg bg-amber-600 hover:bg-amber-500 flex space-x-4 items-center"

@@ -18,7 +18,7 @@ export const BeerCard = ({ details }: BeerCardProps) => {
       className="border border-gray-300 overflow-hidden relative rounded-2xl bg-white p-4 py-6 pt-8 hover:shadow-md transition-[box-shadow] duration-300 group"
       ref={ref}
     >
-      <div className=" block absolute -mt-4">
+      <div className="group-hover:block hidden absolute -mt-4">
         <AddToShopList mouseLeft={mouseLeft} id={id} />
       </div>
       <div className="flex justify-center cursor-pointer h-[250px] relative">

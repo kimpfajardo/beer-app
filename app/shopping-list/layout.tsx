@@ -1,12 +1,14 @@
 import { Logo } from "@/components/Logo";
 import { Navigation } from "@/containers/ShoppingList/Navigation";
-import { ShoppingListProvider } from "@/context/ShoppingList";
+import {
+  ShoppingListBeerType,
+  ShoppingListProvider,
+} from "@/context/ShoppingList";
 import { inter } from "@/utils/fonts";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import { cookies } from "next/headers";
 import { BeerType } from "@/mockBeer";
-import { LayoutProps } from "@/.next/types/app/page";
 
 const getBeerList = async () => {
   const supabase = createServerComponentClient({ cookies });
@@ -56,10 +58,17 @@ const getBeerDataById = async (
     };
   });
 
-  return combineBeerDataById;
+  return combineBeerDataById.sort(
+    (a: ShoppingListBeerType, b: ShoppingListBeerType) =>
+      b.created_at - a.created_at
+  );
 };
 
-export default async function Layout({ children }: LayoutProps) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const rawBeerDataList = await getBeerList();
   const beerList = await getBeerDataById(rawBeerDataList);
 

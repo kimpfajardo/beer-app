@@ -8,8 +8,12 @@ export const metadata = {
   description: "Explore the best beers in the world",
 };
 
-
-export default async function Layout({ children, ...props }: LayoutProps) {
+export default async function Layout({
+  children,
+  ...props
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <>
       <div className={inter.className}>

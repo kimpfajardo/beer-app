@@ -37,17 +37,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [shoppingListData, setShoppingListData] = useState<{
     [x: string]: any;
   } | null>(null);
-  const router = useRouter();
   const supabase = createClientComponentClient();
 
   const getUser = useCallback(async () => {
-    try {
-      const { data } = await supabase.auth.getUser();
-      const { user: userData } = data;
-      setUser(userData);
-    } catch (error) {
-      console.log(error);
+    const { data, error } = await supabase.auth.getUser();
+    const { user: userData } = data;
+    if (error) {
+      return;
     }
+    setUser(userData);
   }, [supabase]);
 
   useEffect(() => {
@@ -72,10 +70,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (user) {
       const handleShoppingList = async () => {
-        const { data, error: shoppingListError } = await fetchShoppingList(
+        const { data, error } = await fetchShoppingList(
           user?.id as string,
           supabase
         );
+
+        if (error) {
+          handleShoppingList();
+          return;
+        }
         setShoppingListData(data?.[0] ?? null);
       };
       handleShoppingList();

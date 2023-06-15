@@ -10,7 +10,7 @@ export const BeerList = () => {
   const { beers } = useBeerList();
   return (
     <>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4 sm:px-0">
         {beers.map((item, index) => (
           <BeerCard details={item} key={`beer-${index}`} />
         ))}

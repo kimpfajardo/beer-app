@@ -12,7 +12,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { FilterPills } from "../FilterPills";
 import { BeerMugIcon, WaterIcon } from "@/components/Icons";
 import { Tooltip } from "@/components/Tooltip";
@@ -32,10 +32,12 @@ export const ShopListCard = ({
   deleteBeer: (beer_id: number, list_id: string) => void;
 }) => {
   const { name, image_url, abv, ph, count, list_id, beer_id } = details;
-  const { loading, refreshBeerList } = useShoppingList();
+  const { refreshBeerList } = useShoppingList();
   const supabase = createClientComponentClient();
 
   const [beerCount, setBeerCount] = useState<number>(count as number);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showSave, setShowSave] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) as number;
@@ -65,6 +67,8 @@ export const ShopListCard = ({
   }, []);
 
   const saveBeerCountChanges = useCallback(async () => {
+    
+    setLoading(true);
     const { error } = await supabase
       .from("beers")
       .update({ count: beerCount })
@@ -73,15 +77,25 @@ export const ShopListCard = ({
     if (error) {
       console.error(error);
       setBeerCount(count as number);
+      setLoading(false);
       return;
     }
     toast.success("Item count updated");
     refreshBeerList();
+    setShowSave(false);
+    setLoading(false);
   }, [beerCount, beer_id, list_id, refreshBeerList, supabase, count]);
+
+  useEffect(() => {
+    if (beerCount !== count) {
+      setShowSave(true);
+      return;
+    }
+    setShowSave(false);
+  }, [beerCount, count]);
 
   return (
     <>
-      <Toast />
       <Card className="py-2">
         <div className="grid grid-cols-[auto_1fr] gap-6">
           <div className="w-16 h-16 relative mt-2">
@@ -143,7 +157,7 @@ export const ShopListCard = ({
                 </Button>
               </div>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-x-4 w-full sm:w-auto sm:space-y-0">
-                {beerCount !== count && (
+                {showSave && (
                   <Button
                     variant="secondary"
                     className="h-8 w-full sm:w-8 p-0 sm:rounded-full flex justify-center items-center text-green-600 ring-green-400 disabled:ring-green-200 disabled:text-green-300"

@@ -4,21 +4,30 @@ import { cn } from "@/utils/functions";
 import { Menu, Transition } from "@headlessui/react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Fragment } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Fragment, useMemo } from "react";
 
-const ShoppingListNavigation = [
+const navigationList = [
   { name: "My Profile", href: "/profile" },
+  { name: "View my shopping list", href: "/shopping-list" },
   { name: "View beer gallery", href: "/beer-gallery" },
 ];
 
 export const Navigation = () => {
   const supabase = createClientComponentClient();
   const router = useRouter();
+
+  const pathName = usePathname();
   const signOut = async () => {
     await supabase.auth.signOut();
     router.refresh();
   };
+  const navigation = useMemo(() => {
+    return pathName === "/shopping-list"
+      ? navigationList.filter((item) => item.href !== "/shopping-list")
+      : navigationList;
+  }, [pathName]);
+  
   return (
     <Menu as="div" className="relative ml-5 flex-shrink-0">
       <div>
@@ -37,7 +46,7 @@ export const Navigation = () => {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md select-none bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          {ShoppingListNavigation.map((item) => (
+          {navigation.map((item) => (
             <Menu.Item key={item.name}>
               {({ active }) => (
                 <Link

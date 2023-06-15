@@ -27,7 +27,7 @@ const getBeers = async (beerName?: string): Promise<BeerType[]> => {
     `https://api.punkapi.com/v2/beers?per_page=80${beerNameParam}`
   );
   const data = await response.json();
-  return data;
+  return data
 };
 
 const BeerListContext = createContext<BeerContext>({} as BeerContext);

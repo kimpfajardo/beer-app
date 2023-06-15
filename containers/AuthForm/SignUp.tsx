@@ -145,6 +145,7 @@ export const SignUpForm = ({
     }
 
     if (hasError) {
+      setLoading(false)
       return;
     }
 
