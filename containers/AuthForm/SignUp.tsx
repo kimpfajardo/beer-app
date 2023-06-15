@@ -80,7 +80,7 @@ export const SignUpForm = ({
 
   const signUp = async () => {
     const res = await supabase.auth.signUp({
-      email,
+      email: email.trim(),
       password,
       options: {
         data: {
@@ -90,6 +90,7 @@ export const SignUpForm = ({
         },
       },
     });
+
 
     if (!res.error && res.data.user) {
       await createShoppingList(
@@ -105,6 +106,7 @@ export const SignUpForm = ({
         }
       );
 
+      setLoading(false);
       return;
     }
     toast.error("An error occurred! Please try again later.");
@@ -145,7 +147,7 @@ export const SignUpForm = ({
     }
 
     if (hasError) {
-      setLoading(false)
+      setLoading(false);
       return;
     }
 

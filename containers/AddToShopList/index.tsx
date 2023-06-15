@@ -1,5 +1,4 @@
 import { Button } from "@/components/Button";
-import { useAuthContext } from "@/context/UserContext";
 import {
   addNewBeerToShoppingList,
   cn,
@@ -11,10 +10,7 @@ import {
   PlusIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/20/solid";
-import {
-  User,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -30,10 +26,28 @@ export const AddToShopList = ({
   const supabase = createClientComponentClient();
 
   const [loading, setLoading] = useState(false);
-  const { shoppingListData } = useAuthContext();
 
   const addToShoppingList: () => void = useCallback(async () => {
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+    if (sessionError) {
+      toast.error("Something went wrong. Please try again later.");
+      return;
+    }
+    const { data, error: shoppingListError } = await supabase
+      .from("shopping-list")
+      .select("*")
+      .eq("user_id", session?.user.id);
+
+    if (shoppingListError) {
+      toast.error("Something went wrong. Please try again later.");
+      return;
+    }
+    const shoppingListData = data?.[0] ?? null;
     const hasShopListData = !!shoppingListData;
+
     if (!hasShopListData) {
       toast.error("Something went wrong. Please try again later.");
       return;
@@ -56,7 +70,7 @@ export const AddToShopList = ({
     } else {
       addNewBeerToShoppingList(shoppingListId, supabase, qty, id);
     }
-  }, [qty, id, supabase, shoppingListData]);
+  }, [qty, id, supabase]);
 
   useEffect(() => {
     if (mouseLeft) {

@@ -45,7 +45,7 @@ export const createShoppingList = async (
     .from("shopping-list")
     .insert({ user_id: userId, created_at: new Date() });
   if (insertShoppingListRes.error) {
-    toast.error(insertShoppingListRes.error.message);
+    toast.error('Email already exists!');
     return;
   }
   return callback?.();
@@ -58,7 +58,8 @@ export const updateBeerItemCount = async (
   supabase: SupabaseClient<any, "public", any>,
   qty: number
 ) => {
-  const updateRes = await supabase
+  const localSupabase = createClientComponentClient();
+  const updateRes = await localSupabase
     .from("beers")
     .update({ count: parseInt(beer.count) + qty })
     .eq("beer_id", beer.beer_id);
@@ -77,7 +78,7 @@ export const addNewBeerToShoppingList = async (
   qty: number,
   beerId: number
 ) => {
-  const localSupabase = createClientComponentClient()
+  const localSupabase = createClientComponentClient();
   const insertRes = await localSupabase.from("beers").insert({
     beer_id: beerId,
     list_id: shoppingListId,
