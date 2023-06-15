@@ -1,4 +1,3 @@
-import { LayoutProps } from "@/.next/types/app/page";
 import { Logo } from "@/components/Logo";
 import { Navigation } from "@/containers/ShoppingList/Navigation";
 import { inter } from "@/utils/fonts";

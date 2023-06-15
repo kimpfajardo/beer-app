@@ -21,7 +21,7 @@ export const BeerCard = ({ details, user }: BeerCardProps) => {
       ref={ref}
     >
       <div className="group-hover:block hidden absolute -mt-4">
-        <AddToShopList mouseLeft={mouseLeft} id={id} user={user} />
+        <AddToShopList mouseLeft={mouseLeft} id={id} />
       </div>
       <div className="flex justify-center cursor-pointer h-[250px] relative">
         <Link className="hidden lg:block" href={`/beer-details/${id}`} prefetch>
