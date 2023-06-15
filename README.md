@@ -1,7 +1,5 @@
 # Alemanac 🍺
 
-![Alemanac Banner](./path/to/your/banner/image.png)
-
 Alemanac is a web app designed for beer enthusiasts and knowledge seekers. It merges the love for beer and the power of knowledge, providing a platform for users to explore the diverse universe of beers and appreciate the stories behind them.
 
 ## About the Developer 👨‍💻
@@ -15,7 +13,7 @@ Alemanac is developed by [Kim Fajardo](https://kim-fajardo.vercel.app/), a front
 
 ## How to Use Alemanac 📖
 
-1. Visit [Alemanac](your_website_link)
+1. Visit [Alemanac](https://beer-app-eight.vercel.app/)
 2. Create an account
 3. Confirm Email
 4. Boom! You can now explore the beer gallery
