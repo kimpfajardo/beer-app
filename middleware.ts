@@ -33,7 +33,7 @@ export const config = {
     "/",
     "/auth",
     "/beer-gallery",
-    "/beer-details/:id",
+    "/beer-details/:id*",
     "/profile",
     "/shopping-list",
   ],
