@@ -40,3 +40,60 @@ Feel free to reach out to me at [kim.p.fajardo@gmail.com](mailto:kim.p.fajardo@g
 Also check out my [portfolio](https://kim-fajardo.vercel.app/)!
 
 Remember, drink responsibly! 🍻
+
+## Running Locally 💻
+
+Follow these instructions to get Alemanac running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+Make sure you have the following installed on your system before proceeding:
+
+- Node.js (v14 or later)
+- npm (v6 or later)
+
+### Steps to Run
+
+1. **Clone the repository**
+
+    ```
+    git clone https://github.com/your-username/alemanac.git
+    ```
+
+2. **Navigate to the project directory**
+
+    ```
+    cd alemanac
+    ```
+
+3. **Install dependencies**
+
+    With npm:
+
+    ```
+    npm install
+    ```
+
+    Or with Yarn:
+
+    ```
+    yarn install
+    ```
+
+4. **Create a .env file** 
+
+    Copy the `.env.example` file and rename it to `.env`, then replace the placeholder values with your actual values.
+
+5. **Start the development server**
+
+    With npm:
+
+    ```
+    npm run start
+    ```
+
+    Or with Yarn:
+
+    ```
+    yarn start
+    ```
