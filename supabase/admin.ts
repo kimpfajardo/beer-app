@@ -18,40 +18,9 @@ export const deleteUser = async (
     onError: () => void;
   }
 ) => {
-  const { data: shoppingListId } = await supabase
-    .from("shopping-list")
-    .select()
-    .eq("user_id", userId);
-
-  if (shoppingListId?.length === 0) {
-    const { error } = await supabase.auth.admin.deleteUser(userId);
-    if (error) {
-      return callback.onError();
-    }
-    return callback.onSuccess();
-  }
-
-  const { error: beerDeleteError } = await supabase
-    .from("beers")
-    .delete()
-    .eq("list_id", shoppingListId?.[0].list_id);
-
-  if (beerDeleteError) {
-    return callback.onError();
-  }
-  const { error: shoppingListDeleteError } = await supabase
-    .from("shopping-list")
-    .delete()
-    .eq("user_id", userId);
-
-  if (shoppingListDeleteError) {
-    return callback.onError();
-  }
   const { error } = await supabase.auth.admin.deleteUser(userId);
-  if (error) {
-    return callback.onError();
-  }
-  callback.onSuccess();
+  if (!error) return callback.onSuccess();
+  callback.onError();
 };
 
 export default supabase;
