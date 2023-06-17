@@ -144,9 +144,9 @@ export const SignInForm = ({
                 }}
               />
 
-              <div className="text-sm leading-6">
+              {/* <div className="text-sm leading-6">
                 <Anchor href="#">Forgot password?</Anchor>
-              </div>
+              </div> */}
             </div>
 
             <div className="space-y-4">

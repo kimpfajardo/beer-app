@@ -16,14 +16,15 @@ const navigationList = [
 export const Navigation = () => {
   const supabase = createClientComponentClient();
   const router = useRouter();
-
   const pathName = usePathname();
+
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
       router.replace("/");
     }
   };
+
   const navigation = useMemo(() => {
     return pathName === "/shopping-list"
       ? navigationList.filter((item) => item.href !== "/shopping-list")
