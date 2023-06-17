@@ -4,7 +4,6 @@ import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import { InputError } from "@/components/InputError";
 import { Checkbox } from "@/components/Checkbox";
-import { Anchor } from "@/components/Anchor";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -143,10 +142,6 @@ export const SignInForm = ({
                   setValue("rememberMe", !isKeptSignedIn);
                 }}
               />
-
-              {/* <div className="text-sm leading-6">
-                <Anchor href="#">Forgot password?</Anchor>
-              </div> */}
             </div>
 
             <div className="space-y-4">

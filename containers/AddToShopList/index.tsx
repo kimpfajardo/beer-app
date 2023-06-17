@@ -2,6 +2,7 @@ import { Button } from "@/components/Button";
 import {
   addNewBeerToShoppingList,
   cn,
+  createShoppingList,
   updateBeerItemCount,
 } from "@/utils/functions";
 import {
@@ -11,6 +12,7 @@ import {
   ShoppingBagIcon,
 } from "@heroicons/react/20/solid";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -23,6 +25,7 @@ export const AddToShopList = ({
 }) => {
   const [show, setShow] = useState<boolean>(false);
   const [qty, setQty] = useState<number>(1);
+  const router = useRouter();
   const supabase = createClientComponentClient();
 
   const [loading, setLoading] = useState(false);
@@ -32,6 +35,11 @@ export const AddToShopList = ({
       data: { session },
       error: sessionError,
     } = await supabase.auth.getSession();
+
+    if (!session) {
+      await supabase.auth.signOut();
+      router.replace("/auth");
+    }
     if (sessionError) {
       toast.error("Something went wrong. Please try again later.");
       return;
@@ -49,8 +57,8 @@ export const AddToShopList = ({
     const hasShopListData = !!shoppingListData;
 
     if (!hasShopListData) {
-      toast.error("Something went wrong. Please try again later.");
-      return;
+      await createShoppingList(session?.user.id as string, supabase);
+      return addToShoppingList();
     }
     const shoppingListId = shoppingListData.list_id;
     const shoppingListItems = await supabase

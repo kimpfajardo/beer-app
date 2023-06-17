@@ -8,10 +8,10 @@ import Link from "next/link";
 import { User } from "@supabase/supabase-js";
 export interface BeerCardProps {
   details: BeerType;
-  user: User
+  user: User;
 }
 
-export const BeerCard = ({ details, user }: BeerCardProps) => {
+export const BeerCard = ({ details }: BeerCardProps) => {
   const [mouseLeft, ref] = useMouseLeave();
   const { name, tagline, image_url, abv, ph, id } = details;
 
@@ -20,11 +20,11 @@ export const BeerCard = ({ details, user }: BeerCardProps) => {
       className="border border-gray-300 overflow-hidden relative rounded-2xl bg-white p-4 py-6 pt-8 hover:shadow-md transition-[box-shadow] duration-300 group"
       ref={ref}
     >
-      <div className="group-hover:block hidden absolute -mt-4">
+      <div className="absolute -mt-4">
         <AddToShopList mouseLeft={mouseLeft} id={id} />
       </div>
-      <div className="flex justify-center cursor-pointer h-[250px] relative">
-        <Link className="hidden lg:block" href={`/beer-details/${id}`} prefetch>
+      <Link  href={`/beer-details/${id}`} prefetch>
+        <div className="flex justify-center cursor-pointer h-[250px] relative">
           <Image
             className="transition group-hover:scale-95 object-contain"
             src={image_url ?? "/2.png"}
@@ -32,15 +32,8 @@ export const BeerCard = ({ details, user }: BeerCardProps) => {
             fill
             sizes="(min-width: 0px) 640px, 100vw"
           />
-        </Link>
-        <Image
-          className="transition group-hover:scale-95 object-contain lg:hidden"
-          src={image_url ?? "/2.png"}
-          alt=""
-          fill
-          sizes="(min-width: 0px) 640px, 100vw"
-        />
-      </div>
+        </div>
+      </Link>
       <div>
         <div className="px-4 sm:p-4 text-center">
           <Link href={`/beer-details/${id}`} prefetch>
