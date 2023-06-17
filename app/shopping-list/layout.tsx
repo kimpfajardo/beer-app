@@ -9,6 +9,8 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import { cookies } from "next/headers";
 import { BeerType } from "@/mockBeer";
+import { createShoppingList } from "@/utils/functions";
+import { redirect } from "next/navigation";
 
 const getBeerList = async () => {
   const supabase = createServerComponentClient({ cookies });
@@ -20,6 +22,12 @@ const getBeerList = async () => {
     .select("list_id")
     .eq("user_id", session?.user.id);
   if (shoppingListByUser.error) {
+    return [];
+  }
+
+  if (!shoppingListByUser.data.length) {
+    await createShoppingList(session?.user.id as string, supabase);
+    redirect("/shopping-list");
     return [];
   }
   const shoppingListId = shoppingListByUser?.data[0].list_id;

@@ -9,10 +9,10 @@ import zxcvbn from "zxcvbn";
 import { cn, createShoppingList } from "@/utils/functions";
 import { useMemo, useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Toast } from "@/components/Toast";
 import { toast } from "react-toastify";
 import supabaseAdmin from "@/supabase/admin";
+import supabase from "@/supabase";
 
 const validationSchema = z.object({
   firstName: z.string().nonempty("This field is required"),
@@ -69,7 +69,6 @@ export const SignUpForm = ({
     email,
     birthDate,
   } = watch();
-  const supabase = createClientComponentClient();
   const passwordStrengthResult = useMemo(() => {
     return passwordStrength(passwordValue);
   }, [passwordValue]);
@@ -90,7 +89,6 @@ export const SignUpForm = ({
         },
       },
     });
-
 
     if (!res.error && res.data.user) {
       await createShoppingList(
