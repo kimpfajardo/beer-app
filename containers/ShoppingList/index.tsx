@@ -67,7 +67,6 @@ export const ShopListCard = ({
   }, []);
 
   const saveBeerCountChanges = useCallback(async () => {
-    
     setLoading(true);
     const { error } = await supabase
       .from("beers")
@@ -246,14 +245,21 @@ export const SortMenu = ({
 export const FilterMenu = ({
   value,
   onChange,
+  className = '',
 }: {
   value: string[];
   onChange: (value: string) => void;
+  className?: string;
 }) => {
   return (
     <div className="space-y-2">
       <p className="text-sm font-bold">Categories</p>
-      <div className="gap-2 sm:gap-4 h-auto grid grid-cols-3 sm:grid-cols-[auto_auto_auto] sm:grid-cols-rows-1">
+      <div
+        className={cn(
+          'flex space-x-6',
+          className
+        )}
+      >
         {FILTER_LIST.map((item, index) => (
           <FilterPills
             key={`filter-${item}-${index}`}

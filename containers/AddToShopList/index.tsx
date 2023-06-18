@@ -78,7 +78,7 @@ export const AddToShopList = ({
     } else {
       addNewBeerToShoppingList(shoppingListId, supabase, qty, id);
     }
-  }, [qty, id, supabase]);
+  }, [qty, id, supabase, router]);
 
   useEffect(() => {
     if (mouseLeft) {

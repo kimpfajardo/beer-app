@@ -2,12 +2,12 @@ import { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "@/context/UserContext";
-import { redirect } from "next/navigation";
 import {
   User,
   createServerComponentClient,
 } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import "react-modern-drawer/dist/index.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

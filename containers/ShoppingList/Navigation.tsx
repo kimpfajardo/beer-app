@@ -2,6 +2,7 @@
 import { AvatarIcon } from "@/components/Icons";
 import { cn } from "@/utils/functions";
 import { Menu, Transition } from "@headlessui/react";
+import { Bars3Icon } from "@heroicons/react/20/solid";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -34,9 +35,9 @@ export const Navigation = () => {
   return (
     <Menu as="div" className="relative ml-5 flex-shrink-0">
       <div>
-        <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 overflow-hidden w-8 h-8">
+        <Menu.Button className="flex items-center justify-center rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 overflow-hidden w-8 h-8">
           <span className="sr-only">Open user menu</span>
-          <AvatarIcon />
+          <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
         </Menu.Button>
       </div>
       <Transition

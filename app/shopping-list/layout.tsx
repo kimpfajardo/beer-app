@@ -85,12 +85,8 @@ export default async function Layout({
       <ShoppingListProvider beerList={beerList}>
         <div className="bg-slate-50 min-h-screen p-0 sm:p-6 lg:p-8">
           <div className="mx-auto max-w-2xl h-full">
-            <div className="mx-auto max-w-7xl p-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center">
-                <Logo />
-                <Navigation />
-              </div>
-              <div>{children}</div>
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 h-full">
+              <div className="h-full">{children}</div>
             </div>
           </div>
         </div>

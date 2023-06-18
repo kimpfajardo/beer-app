@@ -17,7 +17,7 @@ export const BeerCard = ({ details }: BeerCardProps) => {
 
   return (
     <div
-      className="border border-gray-300 overflow-hidden relative rounded-2xl bg-white p-4 py-6 pt-8 hover:shadow-md transition-[box-shadow] duration-300 group"
+      className="border border-gray-300 overflow-hidden relative rounded-2xl bg-white p-4 py-6 pt-8 lg:hover:shadow-md transition-[box-shadow] duration-300 group"
       ref={ref}
     >
       <div className="absolute -mt-4">
@@ -26,7 +26,7 @@ export const BeerCard = ({ details }: BeerCardProps) => {
       <Link  href={`/beer-details/${id}`} prefetch>
         <div className="flex justify-center cursor-pointer h-[250px] relative">
           <Image
-            className="transition group-hover:scale-95 object-contain"
+            className="transition lg:group-hover:scale-95 object-contain"
             src={image_url ?? "/2.png"}
             alt=""
             fill
