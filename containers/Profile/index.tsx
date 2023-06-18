@@ -108,7 +108,7 @@ export const Actions = () => {
     setLoading(true);
     const {error} = await supabase.auth.signOut();
     if (!error){
-      router.replace("/");
+      router.replace("/auth");
     }
   };
 
